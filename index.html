@@ -26,6 +26,22 @@
 </head>
 <body class="h-screen flex flex-col overflow-hidden font-sans text-gray-700 bg-gradient-to-br from-indigo-50 via-fuchsia-50 to-pink-50">
 
+    <!-- Toast Notification Mengambang -->
+    <div id="toastContainer" class="fixed top-4 right-4 md:top-6 md:right-6 z-[100] flex flex-col gap-3 pointer-events-none">
+        <div id="messageNotification" class="transform transition-all duration-300 translate-x-12 opacity-0 hidden pointer-events-auto bg-rose-50 border border-rose-200 rounded-2xl p-4 shadow-2xl shadow-rose-200/50 flex items-start gap-3 w-[320px] md:w-[380px]">
+            <div id="msgIcon" class="text-rose-500 mt-0.5 shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+            </div>
+            <div class="flex-1">
+                <h4 id="msgTitle" class="text-sm font-extrabold text-rose-700 tracking-wide">Pemberitahuan</h4>
+                <p id="msgText" class="text-xs text-rose-600 mt-1 leading-relaxed">Pesan akan muncul di sini.</p>
+            </div>
+            <button onclick="hideMessage()" class="text-rose-400 hover:text-rose-600 bg-rose-100/50 hover:bg-rose-100 p-1.5 rounded-lg transition-colors shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+        </div>
+    </div>
+
     <!-- Navigasi Atas -->
     <nav class="bg-white/80 backdrop-blur-md border-b border-pink-100 px-4 md:px-6 py-3 flex justify-between items-center shadow-sm z-30 shrink-0 relative">
         <div class="flex items-center gap-3">
@@ -47,7 +63,14 @@
         </div>
         
         <div class="flex gap-2 md:gap-3">
-            <button onclick="window.location.reload()" class="px-3 md:px-4 py-2 text-xs md:text-sm font-bold text-pink-300 hover:text-rose-500 hover:bg-rose-50 rounded-xl transition-colors">Clear</button>
+            <button id="btnPanduan" class="px-3 md:px-4 py-1.5 md:py-2 bg-gradient-to-r from-indigo-400 to-pink-400 text-white rounded-xl text-xs md:text-sm font-bold hover:from-indigo-500 hover:to-pink-500 shadow-lg shadow-pink-200 transition-all flex items-center gap-1.5 md:gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+                <div class="flex flex-col text-left leading-tight justify-center">
+                    <span>PanduanAjaib</span>
+                    <span class="text-pink-100">Canvas</span>
+                </div>
+            </button>
+            <button onclick="window.location.reload()" title="hapus dan tulis ulang CeritaAjaib Anda" class="px-4 py-2 text-xs md:text-sm font-bold bg-rose-50 text-rose-500 hover:bg-rose-100 hover:text-rose-600 rounded-2xl transition-colors">ResetAjaib</button>
             <button id="btnExport" class="px-4 md:px-5 py-2 bg-gradient-to-r from-indigo-400 to-pink-400 text-white rounded-xl text-xs md:text-sm font-bold hover:from-indigo-500 hover:to-pink-500 shadow-lg shadow-pink-200 transition-all flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 hidden md:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -131,26 +154,18 @@
                         <textarea id="karakterCerita" class="w-full bg-white border border-pink-100 rounded-2xl p-3.5 text-sm focus:ring-2 focus:ring-pink-300 outline-none transition-all shadow-sm text-gray-700 placeholder-pink-200" rows="2" placeholder="e.g., A girl with pastel purple hair wearing a knit sweater..."></textarea>
                     </div>
 
-                    <!-- Engine Target -->
-                    <div>
-                        <label for="engineTarget" class="block text-xs font-extrabold bg-gradient-to-r from-indigo-500 to-pink-500 bg-clip-text text-transparent uppercase tracking-wider mb-2 cursor-pointer">Target Engine</label>
-                        <select id="engineTarget" class="w-full bg-white border border-pink-100 rounded-xl p-3 text-sm focus:ring-2 focus:ring-pink-300 outline-none cursor-pointer font-bold text-indigo-700 shadow-sm transition-all">
-                            <option value="veo3">Google Labs Flow (VEO 3.0) ✨</option>
-                            <option value="runway">Runway Gen-3 Alpha</option>
-                            <option value="luma">Luma Dream Machine</option>
-                            <option value="kling">Kling AI</option>
-                        </select>
-                    </div>
-
                     <!-- Gaya Visual -->
                     <div>
                         <label for="gayaVisual" class="block text-xs font-extrabold bg-gradient-to-r from-indigo-500 to-pink-500 bg-clip-text text-transparent uppercase tracking-wider mb-2 cursor-pointer">Visual Style</label>
                         <select id="gayaVisual" class="w-full bg-white border border-pink-100 rounded-xl p-3 text-sm focus:ring-2 focus:ring-pink-300 outline-none cursor-pointer text-gray-700 shadow-sm transition-all">
-                            <option>Soft Pastel (Dreamy)</option>
-                            <option>Cinematic Movie (Realistic)</option>
-                            <option>3D Animation (Pixar Style)</option>
-                            <option>ClayMotion (Stop Motion) 🎨</option>
-                            <option>Anime (Studio Ghibli)</option>
+                            <option>🎬 Cinematic / Live Action</option>
+                            <option>🌸 Anime 90s (Studio Ghibli)</option>
+                            <option>🧸 3D Animation (Pixar/Disney)</option>
+                            <option>🎨 Watercolor / Hand-drawn</option>
+                            <option>🕹️ Cyberpunk / Sci-Fi</option>
+                            <option>📸 Realistic Photography</option>
+                            <option>☁️ Soft Pastel (Dreamy)</option>
+                            <option>🧶 ClayMotion</option>
                         </select>
                     </div>
 
@@ -208,17 +223,6 @@
         <!-- Main Canvas Area -->
         <main class="flex-1 canvas-grid overflow-y-auto p-4 md:p-8 lg:p-12 relative">
             
-            <!-- Notifikasi Message Box -->
-            <div id="messageNotification" class="hidden max-w-2xl mx-auto mb-6 bg-rose-50 border border-rose-200 rounded-2xl p-4 shadow-sm flex items-start gap-3">
-                <div class="text-rose-500 mt-0.5">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
-                </div>
-                <div>
-                    <h4 id="msgTitle" class="text-sm font-bold text-rose-700">Pemberitahuan</h4>
-                    <p id="msgText" class="text-xs text-rose-600 mt-1">Pesan akan muncul di sini.</p>
-                </div>
-            </div>
-
             <!-- Header Output -->
             <div id="outputHeader" class="hidden max-w-4xl mx-auto mb-6 flex flex-col md:flex-row justify-between items-start gap-4">
                 <div class="max-w-2xl">
@@ -250,32 +254,332 @@
         </main>
     </div>
 
+    <!-- Modal PanduanAjaib -->
+    <div id="modalPanduan" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6">
+        <!-- Backdrop -->
+        <div id="backdropPanduan" class="absolute inset-0 bg-pink-900/30 backdrop-blur-sm transition-opacity cursor-pointer"></div>
+        
+        <!-- Modal Content -->
+        <div class="relative w-full max-w-5xl bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-pink-100 overflow-hidden flex flex-col md:flex-row h-[90vh] md:h-[80vh] animate-[fadeIn_0.3s_ease-out]">
+            
+            <!-- Sidebar Menu Panduan -->
+            <div class="w-full md:w-72 bg-slate-50/80 border-b md:border-b-0 md:border-r border-pink-100 shrink-0 flex flex-col">
+                <div class="p-4 md:p-6 border-b border-pink-100/50 shrink-0">
+                    <h2 class="text-lg md:text-xl font-extrabold bg-gradient-to-r from-indigo-500 to-pink-500 bg-clip-text text-transparent flex items-center gap-2" style="font-family: 'Fredoka', sans-serif;">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-400" viewBox="0 0 20 20" fill="currentColor"><path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" /></svg>
+                        Buku Panduan
+                    </h2>
+                </div>
+                <!-- Menu: Horizontal scroll di HP/Layar kecil, Vertikal di Laptop -->
+                <div class="flex flex-row md:flex-col overflow-x-auto md:overflow-x-hidden md:overflow-y-auto custom-scrollbar flex-1 md:py-3 bg-slate-100/50 md:bg-transparent">
+                    <button class="tab-btn active shrink-0 w-auto md:w-full text-left px-4 md:px-5 py-3 md:py-3.5 text-xs md:text-sm font-bold transition-all flex items-center gap-2 md:gap-3 bg-white text-indigo-600 border-b-4 md:border-b-0 md:border-l-4 border-indigo-500 shadow-sm" data-target="step1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" /></svg>
+                        <span class="whitespace-nowrap md:whitespace-normal">1. Persiapan API</span>
+                    </button>
+                    <button class="tab-btn shrink-0 w-auto md:w-full text-left px-4 md:px-5 py-3 md:py-3.5 text-xs md:text-sm font-bold transition-all flex items-center gap-2 md:gap-3 text-gray-500 hover:bg-indigo-50/50 hover:text-indigo-600 border-b-4 md:border-b-0 md:border-l-4 border-transparent" data-target="step2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
+                        <span class="whitespace-nowrap md:whitespace-normal">2. Form & Eksekusi</span>
+                    </button>
+                    <button class="tab-btn shrink-0 w-auto md:w-full text-left px-4 md:px-5 py-3 md:py-3.5 text-xs md:text-sm font-bold transition-all flex items-center gap-2 md:gap-3 text-gray-500 hover:bg-indigo-50/50 hover:text-indigo-600 border-b-4 md:border-b-0 md:border-l-4 border-transparent" data-target="step3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                        <span class="whitespace-nowrap md:whitespace-normal">3. Text to Image</span>
+                    </button>
+                    <button class="tab-btn shrink-0 w-auto md:w-full text-left px-4 md:px-5 py-3 md:py-3.5 text-xs md:text-sm font-bold transition-all flex items-center gap-2 md:gap-3 text-gray-500 hover:bg-indigo-50/50 hover:text-indigo-600 border-b-4 md:border-b-0 md:border-l-4 border-transparent" data-target="step4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+                        <span class="whitespace-nowrap md:whitespace-normal">4. Image to Video</span>
+                    </button>
+                    <button class="tab-btn shrink-0 w-auto md:w-full text-left px-4 md:px-5 py-3 md:py-3.5 text-xs md:text-sm font-bold transition-all flex items-center gap-2 md:gap-3 text-gray-500 hover:bg-indigo-50/50 hover:text-indigo-600 border-b-4 md:border-b-0 md:border-l-4 border-transparent" data-target="step5">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
+                        <span class="whitespace-nowrap md:whitespace-normal">5. Voiceover</span>
+                    </button>
+                    <button class="tab-btn shrink-0 w-auto md:w-full text-left px-4 md:px-5 py-3 md:py-3.5 text-xs md:text-sm font-bold transition-all flex items-center gap-2 md:gap-3 text-gray-500 hover:bg-indigo-50/50 hover:text-indigo-600 border-b-4 md:border-b-0 md:border-l-4 border-transparent" data-target="step6">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" /></svg>
+                        <span class="whitespace-nowrap md:whitespace-normal">6. Editing</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Content Area Panduan -->
+            <div class="flex-1 flex flex-col bg-white overflow-hidden relative">
+                <!-- Tombol Close -->
+                <button id="btnClosePanduan" class="absolute top-4 right-4 p-2 text-gray-400 hover:text-rose-500 hover:bg-rose-50 rounded-full transition-colors z-10 bg-white/50 backdrop-blur-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+
+                <div class="p-6 md:p-10 overflow-y-auto custom-scrollbar h-full">
+                    
+                    <!-- Step 1 -->
+                    <div id="step1" class="tab-content block animate-[fadeIn_0.3s_ease-out]">
+                        <div class="flex items-center gap-4 mb-6 pb-6 border-b border-pink-100/60">
+                            <div class="bg-gradient-to-br from-indigo-400 to-indigo-600 text-white p-3.5 rounded-2xl shadow-lg shadow-indigo-200 shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" /></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-extrabold text-gray-800" style="font-family: 'Fredoka', sans-serif;">Mendapatkan API Key</h3>
+                                <p class="text-sm text-gray-500 mt-0.5">Langkah pertama untuk menghubungkan otak AI.</p>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <p class="text-sm text-gray-600 leading-relaxed">Tools ini menggunakan AI Google Gemini untuk berpikir. Anda memerlukan "Kunci Akses" (API Key) gratis dari Google.</p>
+                            <div class="bg-indigo-50/50 border border-indigo-100 p-5 rounded-2xl">
+                                <ol class="list-decimal list-inside text-sm text-indigo-800 space-y-3">
+                                    <li>Buka situs <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-pink-500 font-bold hover:underline">Google AI Studio ↗</a> dan login dengan akun Google/Gmail Anda.</li>
+                                    <li>Klik tombol biru <b>"Create API key"</b>.</li>
+                                    <li>Salin (Copy) deretan teks acak yang panjang tersebut.</li>
+                                    <li>Kembali ke tools Storyboard ini, paste key tersebut di kolom <b>"API Key"</b> pada menu kiri.</li>
+                                    <li>Klik tombol <b>Test</b>. Jika berhasil, daftar model AI akan muncul.</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div id="step2" class="tab-content hidden animate-[fadeIn_0.3s_ease-out]">
+                        <div class="flex items-center gap-4 mb-6 pb-6 border-b border-pink-100/60">
+                            <div class="bg-gradient-to-br from-pink-400 to-pink-600 text-white p-3.5 rounded-2xl shadow-lg shadow-pink-200 shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-extrabold text-gray-800" style="font-family: 'Fredoka', sans-serif;">Form & Eksekusi</h3>
+                                <p class="text-sm text-gray-500 mt-0.5">Meracik ide dan parameter cerita ajaib Anda.</p>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <p class="text-sm text-gray-600 leading-relaxed">Setelah API terkoneksi, saatnya menuangkan ide cerita Anda di panel sebelah kiri.</p>
+                            <ul class="space-y-3 text-sm text-gray-700">
+                                <li class="bg-pink-50/50 p-4 rounded-xl border border-pink-100 flex gap-3">
+                                    <span class="text-xl">💡</span>
+                                    <div><b>Saran AI:</b> Kalau Anda sedang buntu, klik tombol "Saran AI ✨". Aplikasi akan mengisikan ide cerita acak secara otomatis!</div>
+                                </li>
+                                <li class="bg-gray-50 p-4 rounded-xl border border-gray-100 flex gap-3">
+                                    <span class="text-xl">✍️</span>
+                                    <div><b>Karakter / Subjek:</b> Isi bagian ini sedetail mungkin (misal: "Pria berjaket merah, rambut pirang"). Ini sangat penting agar AI menjaga tokoh utama Anda tetap konsisten di setiap scene.</div>
+                                </li>
+                            </ul>
+                            <p class="text-sm text-indigo-600 font-bold mt-4 bg-indigo-50 p-3 rounded-xl border border-indigo-100 text-center">Jika semua sudah diisi, klik tombol besar "Generate Storyboard" di paling bawah!</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div id="step3" class="tab-content hidden animate-[fadeIn_0.3s_ease-out]">
+                        <div class="flex items-center gap-4 mb-6 pb-6 border-b border-pink-100/60">
+                            <div class="bg-gradient-to-br from-purple-400 to-purple-600 text-white p-3.5 rounded-2xl shadow-lg shadow-purple-200 shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-extrabold text-gray-800" style="font-family: 'Fredoka', sans-serif;">Text to Image</h3>
+                                <p class="text-sm text-gray-500 mt-0.5">Mengubah naskah adegan menjadi foto visual pertama.</p>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <p class="text-sm text-gray-600 leading-relaxed">Sekarang Anda sudah punya naskah per *scene*. Langkah pertama adalah menyulap kotak teks <b>"1. Visual Prompt (Image)"</b> menjadi gambar diam (foto).</p>
+                            <div class="bg-purple-50/50 border border-purple-100 p-5 rounded-2xl">
+                                <h4 class="font-bold text-purple-800 text-sm mb-3">🛠️ Rekomendasi Tools Gratis:</h4>
+                                <div class="space-y-3">
+                                    <div class="bg-white p-3 rounded-xl shadow-sm border border-purple-50">
+                                        <p class="font-bold text-sm text-purple-700">1. Bing Image Creator (DALL-E 3)</p>
+                                        <p class="text-xs text-gray-500 mt-1">Sangat pintar mengikuti prompt. Gratis token harian pakai akun Microsoft.</p>
+                                    </div>
+                                    <div class="bg-white p-3 rounded-xl shadow-sm border border-purple-50">
+                                        <p class="font-bold text-sm text-purple-700">2. Leonardo.ai</p>
+                                        <p class="text-xs text-gray-500 mt-1">Kualitas gambar sangat estetik dan cinematic. Gratis 150 token setiap hari.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-sm text-pink-500 font-bold mt-2">Cara Pakai: Klik tombol "Copy" pada kotak nomor 1, lalu Paste ke web di atas. Simpan fotonya!</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div id="step4" class="tab-content hidden animate-[fadeIn_0.3s_ease-out]">
+                        <div class="flex items-center gap-4 mb-6 pb-6 border-b border-pink-100/60">
+                            <div class="bg-gradient-to-br from-sky-400 to-sky-600 text-white p-3.5 rounded-2xl shadow-lg shadow-sky-200 shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-extrabold text-gray-800" style="font-family: 'Fredoka', sans-serif;">Image to Video</h3>
+                                <p class="text-sm text-gray-500 mt-0.5">Menggerakkan foto diam menjadi video sinematik.</p>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <p class="text-sm text-gray-600 leading-relaxed">Bagian paling seru! Upload foto dari tahap sebelumnya, lalu gunakan kotak <b>"2. Motion Prompt (Video)"</b> untuk memberi perintah pergerakan pada AI Video.</p>
+                            <div class="bg-sky-50/50 border border-sky-100 p-5 rounded-2xl">
+                                <h4 class="font-bold text-sky-800 text-sm mb-3">🛠️ Rekomendasi Tools Video (Gratis):</h4>
+                                <div class="space-y-3">
+                                    <div class="bg-white p-3 rounded-xl shadow-sm border border-sky-50">
+                                        <p class="font-bold text-sm text-sky-700 flex items-center justify-between">
+                                            1. Haiper.ai
+                                            <span class="text-[9px] bg-sky-100 text-sky-600 px-2 py-0.5 rounded-full">Paling Disarankan</span>
+                                        </p>
+                                        <p class="text-xs text-gray-500 mt-1">Sepenuhnya gratis! Hasilnya sangat halus untuk durasi 2-4 detik.</p>
+                                    </div>
+                                    <div class="bg-white p-3 rounded-xl shadow-sm border border-sky-50">
+                                        <p class="font-bold text-sm text-sky-700">2. Kling AI / Luma Dream Machine</p>
+                                        <p class="text-xs text-gray-500 mt-1">Memberikan kredit gratis setiap hari. Sangat realistis untuk manusia.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div id="step5" class="tab-content hidden animate-[fadeIn_0.3s_ease-out]">
+                        <div class="flex items-center gap-4 mb-6 pb-6 border-b border-pink-100/60">
+                            <div class="bg-gradient-to-br from-emerald-400 to-emerald-600 text-white p-3.5 rounded-2xl shadow-lg shadow-emerald-200 shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-extrabold text-gray-800" style="font-family: 'Fredoka', sans-serif;">Voiceover (Suara)</h3>
+                                <p class="text-sm text-gray-500 mt-0.5">Menambahkan narasi dan dialog agar video lebih hidup.</p>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <p class="text-sm text-gray-600 leading-relaxed">Salin teks pada kotak <b>"3. Voiceover / Narration"</b> dan ubah menjadi suara dubbing profesional menggunakan AI.</p>
+                            <div class="bg-emerald-50/50 border border-emerald-100 p-5 rounded-2xl">
+                                <h4 class="font-bold text-emerald-800 text-sm mb-3">🛠️ Rekomendasi Tools Suara:</h4>
+                                <div class="space-y-3">
+                                    <div class="bg-white p-3 rounded-xl shadow-sm border border-emerald-50">
+                                        <p class="font-bold text-sm text-emerald-700">1. ElevenLabs</p>
+                                        <p class="text-xs text-gray-500 mt-1">Suara AI paling natural di dunia. Ada kuota gratis bulanan.</p>
+                                    </div>
+                                    <div class="bg-white p-3 rounded-xl shadow-sm border border-emerald-50">
+                                        <p class="font-bold text-sm text-emerald-700">2. Fitur Text-to-Speech CapCut</p>
+                                        <p class="text-xs text-gray-500 mt-1">Paling praktis karena langsung dilakukan di dalam aplikasi edit video.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 6 -->
+                    <div id="step6" class="tab-content hidden animate-[fadeIn_0.3s_ease-out]">
+                        <div class="flex items-center gap-4 mb-6 pb-6 border-b border-pink-100/60">
+                            <div class="bg-gradient-to-br from-rose-400 to-rose-600 text-white p-3.5 rounded-2xl shadow-lg shadow-rose-200 shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" /></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-extrabold text-gray-800" style="font-family: 'Fredoka', sans-serif;">Editing (Finalisasi)</h3>
+                                <p class="text-sm text-gray-500 mt-0.5">Menyusun potongan video dan merender hasil akhir.</p>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <p class="text-sm text-gray-600 leading-relaxed">Semua bahan sudah siap! Potongan video pendek dari AI dan rekaman suara kini tinggal disatukan.</p>
+                            <div class="bg-rose-50/50 border border-rose-100 p-6 rounded-2xl flex items-center gap-5">
+                                <div class="bg-white p-4 rounded-full shadow-md shrink-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-rose-700 text-base">CapCut (Mobile / PC)</h4>
+                                    <p class="text-sm text-gray-600 mt-1">Aplikasi editing terbaik dan gratis. Susun video sesuai urutan SCENE. Masukkan audionya, tambahkan <i>backsound</i>, dan <b>Mahakarya Anda siap di-upload!</b> 🎉</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Animasi Modal */
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+    </style>
+
     <!-- Scripts -->
     <script>
-        // Message Helper
+        // Message Helper (Toast Animation Logic)
+        let toastTimeout;
+        
         function showMessage(title, text, type = 'error') {
             const notif = document.getElementById('messageNotification');
             const titleEl = document.getElementById('msgTitle');
             const textEl = document.getElementById('msgText');
+            const iconEl = document.getElementById('msgIcon');
             
             titleEl.textContent = title;
             textEl.textContent = text;
             notif.classList.remove('hidden');
+            
+            // Force reflow untuk memicu animasi CSS masuk
+            void notif.offsetWidth;
 
             if (type === 'error') {
-                notif.className = "max-w-2xl mx-auto mb-6 bg-rose-50 border border-rose-200 rounded-2xl p-4 shadow-sm flex items-start gap-3";
-                titleEl.className = "text-sm font-bold text-rose-700";
-                textEl.className = "text-xs text-rose-600 mt-1";
+                notif.className = "transform transition-all duration-300 translate-x-0 opacity-100 pointer-events-auto bg-rose-50 border border-rose-200 rounded-2xl p-4 shadow-2xl shadow-rose-200/50 flex items-start gap-3 w-[320px] md:w-[380px]";
+                titleEl.className = "text-sm font-extrabold text-rose-700 tracking-wide";
+                textEl.className = "text-xs text-rose-600 mt-1 leading-relaxed";
+                iconEl.className = "text-rose-500 mt-0.5 shrink-0";
             } else if (type === 'info') {
-                notif.className = "max-w-2xl mx-auto mb-6 bg-indigo-50 border border-indigo-200 rounded-2xl p-4 shadow-sm flex items-start gap-3";
-                titleEl.className = "text-sm font-bold text-indigo-700";
-                textEl.className = "text-xs text-indigo-600 mt-1";
+                notif.className = "transform transition-all duration-300 translate-x-0 opacity-100 pointer-events-auto bg-indigo-50 border border-indigo-200 rounded-2xl p-4 shadow-2xl shadow-indigo-200/50 flex items-start gap-3 w-[320px] md:w-[380px]";
+                titleEl.className = "text-sm font-extrabold text-indigo-700 tracking-wide";
+                textEl.className = "text-xs text-indigo-600 mt-1 leading-relaxed";
+                iconEl.className = "text-indigo-500 mt-0.5 shrink-0";
             }
+
+            // Auto-hide setelah 4 detik
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                hideMessage();
+            }, 4000);
         }
 
         function hideMessage() {
-            document.getElementById('messageNotification').classList.add('hidden');
+            const notif = document.getElementById('messageNotification');
+            // Memicu animasi keluar (menggeser ke kanan dan memudar)
+            notif.classList.remove('translate-x-0', 'opacity-100');
+            notif.classList.add('translate-x-12', 'opacity-0');
+            
+            // Menghilangkan elemen dari tampilan setelah animasi selesai (300ms)
+            setTimeout(() => {
+                notif.classList.add('hidden');
+            }, 300);
         }
+
+        // Logic Modal PanduanAjaib
+        const btnPanduan = document.getElementById('btnPanduan');
+        const modalPanduan = document.getElementById('modalPanduan');
+        const backdropPanduan = document.getElementById('backdropPanduan');
+        const btnClosePanduan = document.getElementById('btnClosePanduan');
+        
+        function openPanduan() {
+            modalPanduan.classList.remove('hidden');
+        }
+        function closePanduan() {
+            modalPanduan.classList.add('hidden');
+        }
+
+        btnPanduan.addEventListener('click', openPanduan);
+        btnClosePanduan.addEventListener('click', closePanduan);
+        backdropPanduan.addEventListener('click', closePanduan);
+
+        // Logic Tab Menu Panduan
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Hapus style aktif dari semua tombol
+                tabBtns.forEach(b => {
+                    b.classList.remove('bg-white', 'text-indigo-600', 'border-indigo-500', 'shadow-sm', 'active');
+                    b.classList.add('text-gray-500', 'hover:bg-indigo-50/50', 'hover:text-indigo-600', 'border-transparent');
+                });
+                
+                // Tambahkan style aktif ke tombol yang di-klik
+                btn.classList.remove('text-gray-500', 'hover:bg-indigo-50/50', 'hover:text-indigo-600', 'border-transparent');
+                btn.classList.add('bg-white', 'text-indigo-600', 'border-indigo-500', 'shadow-sm', 'active');
+
+                // Sembunyikan semua konten secara bersih
+                tabContents.forEach(c => {
+                    c.classList.add('hidden');
+                    c.classList.remove('block');
+                });
+
+                // Tampilkan konten target
+                const targetId = btn.getAttribute('data-target');
+                document.getElementById(targetId).classList.remove('hidden');
+                document.getElementById(targetId).classList.add('block');
+            });
+        });
 
         // 1. Mobile Menu Toggle
         const btnMenu = document.getElementById('mobileMenuBtn');
@@ -305,6 +609,7 @@
         btn916.addEventListener('click', () => setRatio("9:16", btn916, btn169));
 
         // 3. API Logic & Models Data
+        let isApiValid = false; // Penanda apakah API sudah divalidasi atau belum
         const apiProvider = document.getElementById('apiProvider');
         const apiModel = document.getElementById('apiModel');
         const btnTestApi = document.getElementById('btnTestApi');
@@ -339,6 +644,7 @@
         };
 
         function resetModelSelection() {
+            isApiValid = false; // Reset status jika provider diganti atau key kosong
             apiModel.innerHTML = "<option>Click Test API first...</option>";
             apiModel.disabled = true;
             apiModel.classList.add('bg-pink-50/50', 'text-gray-400', 'cursor-not-allowed');
@@ -358,10 +664,12 @@
                 btnTestApi.innerHTML = "Test";
                 apiStatus.classList.remove('hidden');
                 if(key.trim() === "") {
+                    isApiValid = false;
                     apiStatus.textContent = "⚠️ API Key is empty!";
                     apiStatus.className = "text-[10px] mt-1.5 font-bold text-rose-500";
                     resetModelSelection();
                 } else {
+                    isApiValid = true; // Set status API menjadi valid/berhasil
                     apiStatus.textContent = "✅ Connected & Valid!";
                     apiStatus.className = "text-[10px] mt-1.5 font-bold text-indigo-500";
                     
@@ -386,6 +694,12 @@
 
         // 4. Auto-Saran Tema & Karakter
         document.getElementById('btnSaranAi').addEventListener('click', () => {
+            // Cek apakah API sudah diinput dan di-test
+            if (!isApiValid) {
+                showMessage("Aksi Dibutuhkan", "Harap masukkan API Key dan klik tombol 'Test' terlebih dahulu di menu API Settings.", "error");
+                return;
+            }
+
             const judulInput = document.getElementById('judulCerita');
             let judul = judulInput.value.trim();
             const btn = document.getElementById('btnSaranAi');
@@ -394,12 +708,64 @@
             
             setTimeout(() => {
                 if (judul === "") {
-                    judulInput.value = "The Pastel Clouds";
-                    document.getElementById('temaCerita').value = "Sebuah petualangan magis menyusuri langit di atas awan-awan berwarna permen kapas, dipenuhi makhluk bersayap kristal.";
-                    document.getElementById('karakterCerita').value = "Gadis kecil menggemaskan dengan kacamata penerbang (aviator goggles) vintage dan mantel tebal berwarna soft pink.";
+                    // Kumpulan ide acak dengan berbagai genre
+                    const randomIdeas = [
+                        {
+                            judul: "The Pastel Clouds",
+                            tema: "Sebuah petualangan magis menyusuri langit di atas awan-awan berwarna permen kapas, dipenuhi makhluk bersayap kristal.",
+                            karakter: "Gadis kecil menggemaskan dengan kacamata penerbang (aviator goggles) vintage dan mantel tebal berwarna soft pink."
+                        },
+                        {
+                            judul: "Neon Syndicate",
+                            tema: "Di kota cyberpunk yang tak pernah tidur, seorang detektif swasta harus memecahkan kasus pencurian data ingatan sebelum ingatannya sendiri dihapus.",
+                            karakter: "Detektif pria dengan jas hujan panjang (trench coat) gelap, lengan sibernetik yang memancarkan cahaya neon biru, dan tatapan mata yang tajam."
+                        },
+                        {
+                            judul: "Whispers of the Old Woods",
+                            tema: "Sekelompok remaja tersesat di hutan kuno yang legenda lokal sebut sebagai tempat peristirahatan roh-roh pendendam yang bisa menirukan suara orang tercinta.",
+                            karakter: "Remaja perempuan dengan jaket kuning cerah yang kotor, memegang senter yang berkedip-kedip, ekspresi wajah ketakutan dan penuh keringat."
+                        },
+                        {
+                            judul: "The Last Barista on Mars",
+                            tema: "Slice of life tentang satu-satunya kedai kopi di koloni planet Mars, menceritakan interaksi hangat antara barista manusia dan robot-robot pekerja tambang.",
+                            karakter: "Pria paruh baya dengan apron kanvas lusuh, rambut beruban, tersenyum ramah sambil membersihkan gelas dengan lap kain."
+                        },
+                        {
+                            judul: "Knight of the Cursed Realm",
+                            tema: "Dark fantasy epik tentang ksatria terakhir dari kerajaan yang telah hancur, berkelana mencari pedang suci untuk mengakhiri kutukan naga kegelapan.",
+                            karakter: "Ksatria berbalut zirah baja hitam yang penyok dan penuh bekas cakaran, membawa jubah merah robek, memancarkan aura kepahlawanan yang suram."
+                        },
+                        {
+                            judul: "Culinary Chaos",
+                            tema: "Komedi kekacauan di dapur restoran bintang lima ketika koki utamanya tiba-tiba bertukar tubuh dengan seekor rakun jalanan di malam kunjungan kritikus makanan.",
+                            karakter: "Chef dengan seragam putih bersih yang panik dan seekor rakun gemuk yang memakai topi koki kecil, keduanya saling berteriak."
+                        }
+                    ];
+                    
+                    // Pilih satu ide secara acak
+                    const randomIdea = randomIdeas[Math.floor(Math.random() * randomIdeas.length)];
+                    
+                    judulInput.value = randomIdea.judul;
+                    document.getElementById('temaCerita').value = randomIdea.tema;
+                    document.getElementById('karakterCerita').value = randomIdea.karakter;
+                    
                 } else {
-                    document.getElementById('temaCerita').value = `Sebuah narasi visual memukau yang berfokus pada perjalanan emosional dalam dunia "${judul}". Sang protagonis harus menghadapi teka-teki takdir untuk menemukan kedamaian.`;
-                    document.getElementById('karakterCerita').value = `Karakter utama dengan pakaian estetik yang memadukan unsur klasik dan futuristik, warna mata bercahaya lembut.`;
+                    // Jika judul sudah diisi, berikan template cerita acak yang menyertakan judul tersebut
+                    const randomTemplates = [
+                        `Sebuah narasi visual memukau yang berfokus pada perjalanan emosional dalam dunia "${judul}". Sang protagonis harus menghadapi teka-teki takdir untuk menemukan kedamaian.`,
+                        `Kisah thriller penuh misteri di mana rahasia kelam di balik "${judul}" perlahan terungkap, mengancam nyawa siapa saja yang mengetahuinya.`,
+                        `Komedi ringan nan hangat tentang keseharian tokoh utama yang berusaha mewujudkan impiannya di tengah situasi "${judul}" yang penuh kejutan absurd.`,
+                        `Petualangan fantasi epik menembus ruang dan waktu. Artefak atau rahasia bernama "${judul}" menjadi kunci satu-satunya untuk keselamatan dunia.`
+                    ];
+                    const randomKarakterTemplates = [
+                        `Karakter utama dengan pakaian estetik yang memadukan unsur klasik dan futuristik, warna mata bercahaya lembut.`,
+                        `Seseorang dengan penampilan acak-acakan namun memiliki tatapan mata yang sangat tajam dan jenius, selalu membawa buku catatan kecil.`,
+                        `Pemuda energik dengan pakaian kasual yang penuh tambalan warna-warni, selalu membawa ransel besar berisi peralatan aneh.`,
+                        `Sosok misterius yang selalu menyembunyikan wajahnya di balik tudung gelap, bergerak tanpa suara dengan postur yang sangat anggun.`
+                    ];
+                    
+                    document.getElementById('temaCerita').value = randomTemplates[Math.floor(Math.random() * randomTemplates.length)];
+                    document.getElementById('karakterCerita').value = randomKarakterTemplates[Math.floor(Math.random() * randomKarakterTemplates.length)];
                 }
                 btn.innerHTML = "AI Suggestion ✨";
             }, 600);
@@ -431,6 +797,12 @@
             
             hideMessage(); // Bersihkan notifikasi
             
+            // Cek Validasi API (Wajib di-test dulu)
+            if (!isApiValid || !apiKey) { 
+                showMessage("Aksi Dibutuhkan", "Harap masukkan API Key dan klik tombol 'Test' terlebih dahulu di menu API Settings.", "error");
+                return; 
+            }
+
             // Validasi Tema
             if (temaInput.value.trim() === '') {
                 temaInput.classList.add('border-rose-400', 'focus:ring-rose-200');
@@ -441,21 +813,11 @@
                 temaError.classList.add('hidden');
             }
 
-            if (!apiKey) { 
-                showMessage("Aksi Dibutuhkan", "Masukkan API Key dan tekan tombol 'Test' terlebih dahulu.", "info");
-                return; 
-            }
-            if (model.includes("Click") || model.includes("Klik")) { 
-                showMessage("Aksi Dibutuhkan", "Pilih Model AI setelah melakukan Test API.", "info");
-                return; 
-            }
-
             // Ambil seluruh data parameter
             const judul = document.getElementById('judulCerita').value || "Tanpa Judul";
             const tema = temaInput.value.trim();
             const karakter = document.getElementById('karakterCerita').value || "Bebas sesuai tema";
             const gayaVisual = document.getElementById('gayaVisual').value;
-            const engine = document.getElementById('engineTarget').options[document.getElementById('engineTarget').selectedIndex].text;
             const sceneCount = document.getElementById('jumlahScene').value;
             const tipeDurasi = document.getElementById('tipeDurasi').value;
             const valDurasi = document.getElementById('inputDurasi').value || "5";
@@ -482,7 +844,7 @@
                 <div class="bg-white/80 backdrop-blur-sm border border-pink-100 rounded-3xl p-12 text-center flex flex-col items-center shadow-lg shadow-pink-100/50">
                     <div class="inline-block animate-spin rounded-full h-12 w-12 border-[5px] border-pink-100 border-t-pink-400 mb-6"></div>
                     <h3 class="font-extrabold text-xl bg-gradient-to-r from-indigo-500 to-pink-500 bg-clip-text text-transparent mb-2" style="font-family: 'Fredoka', sans-serif;">Menyelam ke Imajinasi...</h3>
-                    <p class="text-sm text-gray-500">Merapalkan mantra prompt untuk ${engine.split(' ')[0]} 🪄</p>
+                    <p class="text-sm text-gray-500">Merapalkan mantra prompt ajaib AI 🪄</p>
                 </div>`;
 
             // Mega Prompt Instruksi
@@ -492,7 +854,6 @@ Buat storyboard video pendek dari data berikut:
 - Judul: ${judul}
 - Tema/Alur: ${tema}
 - Karakter Utama: ${karakter}
-- Engine Video: ${engine}
 - Gaya Visual: ${gayaVisual}
 - Aspek Rasio: ${currentRatio}
 - Jumlah Scene: ${sceneCount ? sceneCount : "Auto (Bebas, buatkan yang terbaik)"}
