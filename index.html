@@ -169,6 +169,16 @@
                         </select>
                     </div>
 
+                    <!-- Jenis Voiceover -->
+                    <div>
+                        <label for="jenisVoiceover" class="block text-xs font-extrabold bg-gradient-to-r from-indigo-500 to-pink-500 bg-clip-text text-transparent uppercase tracking-wider mb-2 cursor-pointer">Voiceover Type</label>
+                        <select id="jenisVoiceover" class="w-full bg-white border border-pink-100 rounded-xl p-3 text-sm focus:ring-2 focus:ring-pink-300 outline-none cursor-pointer text-gray-700 shadow-sm transition-all">
+                            <option value="Narasi (StoryTeller)">🎙️ Narasi (StoryTeller)</option>
+                            <option value="Percakapan (Dialog)">🗣️ Percakapan (Dialog)</option>
+                            <option value="Narasi & Percakapan (Campuran)">🎭 Narasi & Percakapan (Campuran)</option>
+                        </select>
+                    </div>
+
                     <div class="w-full h-px bg-gradient-to-r from-transparent via-pink-200 to-transparent"></div>
 
                     <!-- Jumlah Scene & Rasio -->
@@ -818,11 +828,22 @@
             const tema = temaInput.value.trim();
             const karakter = document.getElementById('karakterCerita').value || "Bebas sesuai tema";
             const gayaVisual = document.getElementById('gayaVisual').value;
+            const jenisVoiceover = document.getElementById('jenisVoiceover').value;
             const sceneCount = document.getElementById('jumlahScene').value;
             const tipeDurasi = document.getElementById('tipeDurasi').value;
             const valDurasi = document.getElementById('inputDurasi').value || "5";
 
             let durasiPrompt = tipeDurasi === 'per_scene' ? `Setiap scene wajib berdurasi ${valDurasi} detik.` : `Total durasi keseluruhan video adalah ${valDurasi} detik, bagikan otomatis untuk tiap scene.`;
+
+            // Format instruksi Voiceover berdasarkan pilihan dropdown
+            let instruksiVoiceover = '';
+            if (jenisVoiceover === 'Narasi (StoryTeller)') {
+                instruksiVoiceover = 'narasi puitis/deskriptif dari sudut pandang pencerita/storyteller (bukan ucapan langsung karakter)';
+            } else if (jenisVoiceover === 'Percakapan (Dialog)') {
+                instruksiVoiceover = 'dialog atau percakapan langsung yang diucapkan oleh tokoh di scene tersebut';
+            } else {
+                instruksiVoiceover = 'kombinasi dinamis antara narasi pencerita (storyteller) dan dialog langsung dari karakter (bagikan secara proporsional sesuai kebutuhan adegan)';
+            }
 
             // UI Loading State
             const btnGen = document.getElementById('btnGenerate');
@@ -855,6 +876,7 @@ Buat storyboard video pendek dari data berikut:
 - Tema/Alur: ${tema}
 - Karakter Utama: ${karakter}
 - Gaya Visual: ${gayaVisual}
+- Jenis Voiceover: ${jenisVoiceover}
 - Aspek Rasio: ${currentRatio}
 - Jumlah Scene: ${sceneCount ? sceneCount : "Auto (Bebas, buatkan yang terbaik)"}
 - Durasi: ${durasiPrompt}
@@ -869,7 +891,7 @@ Balas HANYA dengan format JSON Object baku seperti di bawah ini tanpa markdown/t
       "duration": "00:05s",
       "prompt_image": "Prompt Visual Statis (Bahasa Inggris). Deskripsi detail subjek, pakaian, latar, pencahayaan, art style, untuk di-generate jadi foto (first frame).",
       "prompt_video": "Prompt Visual Gerak (Bahasa Inggris). Instruksi animasi, pergerakan kamera (pan/zoom), dan dinamika objek untuk AI Video.",
-      "voiceover": "Narasi/Voiceover (Bahasa Indonesia). Teks yang akan diucapkan karakter atau narator."
+      "voiceover": "Narasi/Voiceover (Bahasa Indonesia). Teks yang akan diucapkan. HARUS berupa ${instruksiVoiceover}."
     }
   ]
 }`;
