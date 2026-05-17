@@ -7,102 +7,112 @@
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Tekstur dot-grid pastel (Beige) */
+        /* Tekstur dot-grid pastel (Pink/Indigo) */
         .canvas-grid {
-            background-color: #fefaf3;
-            background-image: radial-gradient(#e5ddd0 1px, transparent 1px);
+            background-color: transparent;
+            background-image: radial-gradient(#fbcfe8 1px, transparent 1px);
             background-size: 24px 24px;
         }
         .scene-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
-        .scene-card:hover { transform: translateY(-4px); box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.05); }
+        .scene-card:hover { transform: translateY(-4px); box-shadow: 0 15px 30px -5px rgba(236, 72, 153, 0.15); }
         
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #fefaf3; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        /* Custom Scrollbar Pastel */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #fdf2f8; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #f9a8d4; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #818cf8; }
+
+        /* Sembunyikan scrollbar untuk menu di HP */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="h-[100dvh] w-full max-w-[100vw] flex flex-col overflow-hidden font-sans text-slate-700 bg-[#fefaf3]">
+<body class="h-[100dvh] w-full max-w-[100vw] flex flex-col overflow-hidden font-sans text-gray-700 bg-gradient-to-br from-indigo-50 via-fuchsia-50 to-pink-50">
 
     <!-- Toast Notification Mengambang -->
     <div id="toastContainer" class="fixed top-4 right-4 md:top-6 md:right-6 z-[100] flex flex-col gap-3 pointer-events-none">
-        <div id="messageNotification" class="transform transition-all duration-300 translate-x-12 opacity-0 hidden pointer-events-auto bg-white border border-slate-200 rounded-2xl p-4 shadow-xl flex items-start gap-3 w-[320px] md:w-[380px]">
-            <div id="msgIcon" class="text-slate-500 mt-0.5 shrink-0">
+        <div id="messageNotification" class="transform transition-all duration-300 translate-x-12 opacity-0 hidden pointer-events-auto bg-rose-50 border border-rose-200 rounded-2xl p-4 shadow-2xl shadow-rose-200/50 flex items-start gap-3 w-[320px] md:w-[380px]">
+            <div id="msgIcon" class="text-rose-500 mt-0.5 shrink-0">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
             </div>
             <div class="flex-1">
-                <h4 id="msgTitle" class="text-sm font-extrabold text-slate-800 tracking-wide">Pemberitahuan</h4>
-                <p id="msgText" class="text-xs text-slate-600 mt-1 leading-relaxed">Pesan akan muncul di sini.</p>
+                <h4 id="msgTitle" class="text-sm font-extrabold text-rose-700 tracking-wide">Pemberitahuan</h4>
+                <p id="msgText" class="text-xs text-rose-600 mt-1 leading-relaxed">Pesan akan muncul di sini.</p>
             </div>
-            <button onclick="hideMessage()" class="text-slate-400 hover:text-slate-600 bg-slate-100 hover:bg-slate-200 p-1.5 rounded-lg transition-colors shrink-0">
+            <button onclick="hideMessage()" class="text-rose-400 hover:text-rose-600 bg-rose-100/50 hover:bg-rose-100 p-1.5 rounded-lg transition-colors shrink-0">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
         </div>
     </div>
 
-    <!-- Navigasi Atas (Biru Pastel Background) -->
-    <nav class="bg-[#b9dfff] border-b border-[#a6d0f5] px-4 md:px-6 py-3 flex justify-between items-center shadow-sm z-30 shrink-0 relative">
-        <div class="flex items-center gap-3">
-            <button id="mobileMenuBtn" class="md:hidden p-2 text-slate-700 hover:bg-[#a6d0f5] rounded-xl transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <!-- Navigasi Atas (Glassmorphism Putih) -->
+    <nav class="bg-white/90 backdrop-blur-md border-b border-pink-100 px-3 md:px-6 py-3 flex justify-between items-center shadow-sm z-30 shrink-0 relative w-full max-w-[100vw]">
+        <div class="flex items-center gap-2 md:gap-3 shrink-0">
+            <button id="mobileMenuBtn" class="md:hidden p-1.5 text-indigo-400 hover:bg-indigo-50 rounded-xl transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
             </button>
             
             <!-- Logo Kerang -->
-            <div class="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full shadow-sm bg-white text-2xl md:text-3xl border border-slate-200">
+            <div class="w-8 h-8 md:w-12 md:h-12 flex items-center justify-center rounded-full shadow-inner bg-gradient-to-br from-indigo-100 to-pink-100 text-lg md:text-3xl border border-pink-50 shrink-0">
                 🐚
             </div>
             
-            <!-- Judul Solid -->
-            <h1 class="text-xl md:text-2xl tracking-wide text-slate-800 font-bold" style="font-family: 'Fredoka', sans-serif;">
-                KerangAjaib <span class="font-sans italic text-sm md:text-base font-normal text-slate-600">Board</span>
+            <!-- Judul Gradasi -->
+            <h1 class="text-base md:text-2xl tracking-wide bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent font-bold flex flex-col sm:block leading-none sm:leading-tight shrink-0" style="font-family: 'Fredoka', sans-serif;">
+                KerangAjaib <span class="font-sans italic text-[10px] sm:text-sm md:text-base font-normal text-pink-400">Board</span>
             </h1>
         </div>
         
-        <div class="flex gap-2 md:gap-3">
-            <button id="btnPanduan" class="px-3 md:px-4 py-1.5 md:py-2 bg-[#ffb8ce] text-slate-800 rounded-xl text-xs md:text-sm font-bold hover:bg-[#ffa1bb] transition-all flex items-center gap-1.5 md:gap-2 shadow-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
-                <span>PanduanAjaib</span>
+        <!-- Wadah Tombol Kanan (Gradasi Pink/Indigo) -->
+        <div class="flex gap-1.5 md:gap-3 overflow-x-auto hide-scrollbar items-center justify-end pl-2">
+            <button id="btnPanduan" class="px-2.5 md:px-4 py-1.5 md:py-2 bg-gradient-to-r from-indigo-400 to-pink-400 text-white rounded-xl text-[10px] md:text-sm font-bold hover:from-indigo-500 hover:to-pink-500 transition-all flex items-center gap-1 md:gap-2 shadow-lg shadow-pink-200 shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 md:h-5 md:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+                <span class="hidden sm:inline">PanduanAjaib</span>
+                <span class="sm:hidden">Panduan</span>
             </button>
-            <button onclick="resetAjaib()" title="hapus dan tulis ulang CeritaAjaib Anda" class="px-4 py-2 text-xs md:text-sm font-bold bg-[#ffb8ce] text-slate-800 hover:bg-[#ffa1bb] rounded-xl transition-colors shadow-sm">ResetAjaib</button>
+            <button onclick="resetAjaib()" title="hapus dan tulis ulang CeritaAjaib Anda" class="px-2.5 md:px-4 py-1.5 md:py-2 text-[10px] md:text-sm font-bold bg-gradient-to-r from-indigo-400 to-pink-400 text-white hover:from-indigo-500 hover:to-pink-500 rounded-xl transition-colors shadow-lg shadow-pink-200 shrink-0">
+                <span class="hidden sm:inline">ResetAjaib</span>
+                <span class="sm:hidden">Reset</span>
+            </button>
             
             <!-- Tombol Export JSON -->
-            <button id="btnExportJson" title="Download data mentah JSON" class="px-4 py-2 text-xs md:text-sm font-bold bg-[#ffb8ce] text-slate-800 hover:bg-[#ffa1bb] rounded-xl transition-colors shadow-sm">
-                Export JSON
+            <button id="btnExportJson" title="Download data mentah JSON" class="px-2.5 md:px-4 py-1.5 md:py-2 text-[10px] md:text-sm font-bold bg-gradient-to-r from-indigo-400 to-pink-400 text-white hover:from-indigo-500 hover:to-pink-500 rounded-xl transition-colors shadow-lg shadow-pink-200 shrink-0">
+                <span class="hidden sm:inline">Export JSON</span>
+                <span class="sm:hidden">JSON</span>
             </button>
         </div>
     </nav>
 
     <div class="flex flex-1 overflow-hidden relative w-full min-h-0">
         
-        <div id="sidebarBackdrop" class="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-10 hidden md:hidden"></div>
+        <div id="sidebarBackdrop" class="fixed inset-0 bg-pink-900/20 backdrop-blur-sm z-10 hidden md:hidden"></div>
 
-        <!-- Sidebar: Control Panel (Blue Pastel Solid) -->
-        <aside id="sidebar" class="absolute md:relative w-full sm:w-80 md:w-[380px] lg:w-[420px] bg-[#b9dfff] border-r border-[#a6d0f5] flex flex-col z-20 shadow-lg shrink-0 h-full transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
+        <!-- Sidebar: Control Panel (White Glassmorphism) -->
+        <aside id="sidebar" class="absolute md:relative w-full sm:w-80 md:w-[380px] lg:w-[420px] bg-white/90 backdrop-blur-xl border-r border-pink-100 flex flex-col z-20 shadow-2xl md:shadow-[4px_0_24px_rgba(236,72,153,0.05)] shrink-0 h-full transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
             <form id="promptForm" class="flex flex-col h-full overflow-hidden">
                 <div class="p-5 md:p-6 overflow-y-auto flex-1 space-y-6">
                     
                     <!-- PENGATURAN API -->
-                    <div class="bg-[#d2ecff] p-4 rounded-2xl shadow-sm space-y-4">
+                    <div class="bg-gradient-to-br from-indigo-50/50 to-pink-50/50 p-4 rounded-2xl border border-pink-100/60 shadow-sm space-y-4">
                         <div class="flex items-center gap-2 mb-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-pink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
-                            <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider">API Settings</h3>
+                            <h3 class="text-xs font-extrabold bg-gradient-to-r from-indigo-500 to-pink-500 bg-clip-text text-transparent uppercase tracking-wider">API Settings</h3>
                             
                             <!-- Badge Key Tersimpan -->
-                            <span id="badgeSaved" class="hidden ml-auto text-[10px] font-bold bg-white text-emerald-600 px-2 py-0.5 rounded-md flex items-center gap-1 shadow-sm border border-emerald-100">
+                            <span id="badgeSaved" class="hidden ml-auto text-[10px] font-bold bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-md flex items-center gap-1 shadow-sm border border-emerald-200">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
                                 Key Tersimpan
                             </span>
                         </div>
                         
                         <div>
-                            <label for="apiProvider" class="block text-[10px] font-bold text-slate-700 uppercase mb-1.5">AI Provider</label>
-                            <select id="apiProvider" class="w-full bg-white border border-transparent rounded-xl p-2.5 text-sm outline-none cursor-pointer text-slate-700 shadow-sm transition-all focus:ring-2 focus:ring-blue-300">
+                            <label for="apiProvider" class="block text-[10px] font-extrabold bg-gradient-to-r from-indigo-400 to-pink-500 bg-clip-text text-transparent uppercase mb-1.5">AI Provider</label>
+                            <select id="apiProvider" class="w-full bg-white border border-pink-100 rounded-xl p-2.5 text-sm outline-none cursor-pointer text-gray-700 shadow-sm transition-all focus:ring-2 focus:ring-pink-300">
                                 <option value="google">Google Gemini</option>
                                 <option value="openai">OpenAI</option>
                                 <option value="anthropic">Anthropic</option>
@@ -110,50 +120,52 @@
                         </div>
 
                         <div>
-                            <label for="apiKey" class="block text-[10px] font-bold text-slate-700 uppercase mb-1.5">API Key</label>
+                            <label for="apiKey" class="block text-[10px] font-extrabold bg-gradient-to-r from-indigo-400 to-pink-500 bg-clip-text text-transparent uppercase mb-1.5">API Key</label>
                             <div class="flex gap-2">
-                                <input type="password" id="apiKey" class="flex-1 bg-white rounded-xl p-2.5 text-sm outline-none shadow-sm transition-all focus:ring-2 focus:ring-blue-300 border border-transparent" placeholder="sk-...">
-                                <button type="button" id="btnTestApi" class="bg-[#a6d4fa] hover:bg-[#8ebdf0] text-slate-700 px-4 py-2.5 rounded-xl text-xs font-bold transition-all shadow-sm">Test</button>
+                                <input type="password" id="apiKey" class="flex-1 bg-white border border-pink-100 rounded-xl p-2.5 text-sm outline-none shadow-sm transition-all focus:ring-2 focus:ring-pink-300" placeholder="sk-...">
+                                <button type="button" id="btnTestApi" class="bg-gradient-to-r from-indigo-400 to-pink-400 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition-all shadow-md shadow-pink-200">Test</button>
                             </div>
                             <p id="apiStatus" class="text-[10px] mt-1.5 hidden font-bold"></p>
                         </div>
 
                         <div>
-                            <label for="apiModel" class="block text-[10px] font-bold text-slate-700 uppercase mb-1.5">AI Model</label>
-                            <select id="apiModel" disabled class="w-full bg-white/50 border border-transparent text-slate-500 rounded-xl p-2.5 text-sm outline-none cursor-not-allowed shadow-sm transition-all">
+                            <label for="apiModel" class="block text-[10px] font-extrabold bg-gradient-to-r from-indigo-400 to-pink-500 bg-clip-text text-transparent uppercase mb-1.5">AI Model</label>
+                            <select id="apiModel" disabled class="w-full bg-pink-50/50 border border-pink-100 text-gray-400 rounded-xl p-2.5 text-sm outline-none cursor-not-allowed shadow-sm transition-all">
                                 <option>Click Test API first...</option>
                             </select>
                         </div>
                     </div>
 
+                    <div class="w-full h-px bg-gradient-to-r from-transparent via-pink-200 to-transparent"></div>
+
                     <!-- Judul Cerita -->
                     <div>
-                        <label for="judulCerita" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Story Title</label>
-                        <input type="text" id="judulCerita" class="w-full bg-white rounded-2xl p-3.5 text-sm outline-none transition-all shadow-sm text-slate-700 placeholder-slate-300 border border-transparent focus:ring-2 focus:ring-blue-300" placeholder="e.g., The Pastel Dreams">
+                        <label for="judulCerita" class="block text-xs font-extrabold bg-gradient-to-r from-indigo-500 to-pink-500 bg-clip-text text-transparent uppercase tracking-wider mb-2">Story Title</label>
+                        <input type="text" id="judulCerita" class="w-full bg-white border border-pink-100 rounded-2xl p-3.5 text-sm outline-none transition-all shadow-sm text-gray-700 placeholder-pink-200 focus:ring-2 focus:ring-pink-300" placeholder="e.g., The Pastel Dreams">
                     </div>
 
                     <!-- Tema Cerita -->
                     <div>
                         <div class="flex justify-between items-center mb-2">
-                            <label for="temaCerita" class="text-xs font-bold text-slate-700 uppercase tracking-wider">Theme / Storyline</label>
-                            <button type="button" id="btnSaranAi" class="text-[10px] bg-white text-slate-600 px-2.5 py-1.5 rounded-xl shadow-sm hover:bg-slate-50 font-bold transition-all flex items-center gap-1 shrink-0 whitespace-nowrap border border-transparent">
+                            <label for="temaCerita" class="text-xs font-extrabold bg-gradient-to-r from-indigo-500 to-pink-500 bg-clip-text text-transparent uppercase tracking-wider">Theme / Storyline</label>
+                            <button type="button" id="btnSaranAi" class="text-[10px] bg-white border border-indigo-200 text-indigo-500 px-2.5 py-1.5 rounded-xl shadow-sm hover:bg-indigo-50 font-bold transition-all flex items-center gap-1 shrink-0 whitespace-nowrap">
                                 AI Suggestion ✨
                             </button>
                         </div>
-                        <textarea id="temaCerita" class="w-full bg-white rounded-2xl p-3.5 text-sm outline-none transition-all shadow-sm text-slate-700 placeholder-slate-300 border border-transparent focus:ring-2 focus:ring-blue-300" rows="4" placeholder="Briefly describe your story idea here..."></textarea>
-                        <p id="temaError" class="text-[11px] text-red-500 mt-1.5 hidden font-bold">⚠️ Story theme cannot be empty.</p>
+                        <textarea id="temaCerita" class="w-full bg-white border border-pink-100 rounded-2xl p-3.5 text-sm outline-none transition-all shadow-sm text-gray-700 placeholder-pink-200 focus:ring-2 focus:ring-pink-300" rows="4" placeholder="Briefly describe your story idea here..."></textarea>
+                        <p id="temaError" class="text-[11px] text-rose-500 mt-1.5 hidden font-bold">⚠️ Story theme cannot be empty.</p>
                     </div>
 
                     <!-- Subjek / Karakter -->
                     <div>
-                        <label for="karakterCerita" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Characters / Subjects</label>
-                        <textarea id="karakterCerita" class="w-full bg-white rounded-2xl p-3.5 text-sm outline-none transition-all shadow-sm text-slate-700 placeholder-slate-300 border border-transparent focus:ring-2 focus:ring-blue-300" rows="2" placeholder="e.g., A girl with pastel purple hair wearing a knit sweater..."></textarea>
+                        <label for="karakterCerita" class="block text-xs font-extrabold bg-gradient-to-r from-indigo-500 to-pink-500 bg-clip-text text-transparent uppercase tracking-wider mb-2">Characters / Subjects</label>
+                        <textarea id="karakterCerita" class="w-full bg-white border border-pink-100 rounded-2xl p-3.5 text-sm outline-none transition-all shadow-sm text-gray-700 placeholder-pink-200 focus:ring-2 focus:ring-pink-300" rows="2" placeholder="e.g., A girl with pastel purple hair wearing a knit sweater..."></textarea>
                     </div>
 
                     <!-- Genre Cerita -->
                     <div>
-                        <label for="genreCerita" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Genre</label>
-                        <select id="genreCerita" class="w-full bg-white rounded-xl p-3 text-sm outline-none cursor-pointer text-slate-700 shadow-sm transition-all border border-transparent focus:ring-2 focus:ring-blue-300">
+                        <label for="genreCerita" class="block text-xs font-extrabold bg-gradient-to-r from-indigo-500 to-pink-500 bg-clip-text text-transparent uppercase tracking-wider mb-2">Genre</label>
+                        <select id="genreCerita" class="w-full bg-white border border-pink-100 rounded-xl p-3 text-sm outline-none cursor-pointer text-gray-700 shadow-sm transition-all focus:ring-2 focus:ring-pink-300">
                             <option value="Bebas (Auto)">✨ Bebas (Auto)</option>
                             <option value="Action / Adventure">⚔️ Action / Adventure</option>
                             <option value="Sci-Fi / Cyberpunk">🚀 Sci-Fi / Cyberpunk</option>
@@ -171,8 +183,8 @@
 
                     <!-- Gaya Visual -->
                     <div>
-                        <label for="gayaVisual" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Visual Style</label>
-                        <select id="gayaVisual" class="w-full bg-white rounded-xl p-3 text-sm outline-none cursor-pointer text-slate-700 shadow-sm transition-all border border-transparent focus:ring-2 focus:ring-blue-300">
+                        <label for="gayaVisual" class="block text-xs font-extrabold bg-gradient-to-r from-indigo-500 to-pink-500 bg-clip-text text-transparent uppercase tracking-wider mb-2">Visual Style</label>
+                        <select id="gayaVisual" class="w-full bg-white border border-pink-100 rounded-xl p-3 text-sm outline-none cursor-pointer text-gray-700 shadow-sm transition-all focus:ring-2 focus:ring-pink-300">
                             <option>🎬 Cinematic / Live Action</option>
                             <option>🌸 Anime 90s (Studio Ghibli)</option>
                             <option>🧸 3D Animation (Pixar/Disney)</option>
@@ -186,54 +198,56 @@
 
                     <!-- Jenis Voiceover -->
                     <div>
-                        <label for="jenisVoiceover" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Voiceover Type</label>
-                        <select id="jenisVoiceover" class="w-full bg-white rounded-xl p-3 text-sm outline-none cursor-pointer text-slate-700 shadow-sm transition-all border border-transparent focus:ring-2 focus:ring-blue-300">
+                        <label for="jenisVoiceover" class="block text-xs font-extrabold bg-gradient-to-r from-indigo-500 to-pink-500 bg-clip-text text-transparent uppercase tracking-wider mb-2">Voiceover Type</label>
+                        <select id="jenisVoiceover" class="w-full bg-white border border-pink-100 rounded-xl p-3 text-sm outline-none cursor-pointer text-gray-700 shadow-sm transition-all focus:ring-2 focus:ring-pink-300">
                             <option value="Narasi (StoryTeller)">🎙️ Narasi (StoryTeller)</option>
                             <option value="Percakapan (Dialog)">🗣️ Percakapan (Dialog)</option>
                             <option value="Narasi & Percakapan (Campuran)">🎭 Narasi & Percakapan (Campuran)</option>
                         </select>
                     </div>
 
+                    <div class="w-full h-px bg-gradient-to-r from-transparent via-pink-200 to-transparent"></div>
+
                     <!-- Jumlah Scene & Rasio -->
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label for="jumlahScene" class="block text-[10px] font-bold text-slate-700 uppercase tracking-wider mb-2">Scene Count</label>
+                            <label for="jumlahScene" class="block text-[10px] font-extrabold bg-gradient-to-r from-indigo-500 to-pink-500 bg-clip-text text-transparent uppercase tracking-wider mb-2">Scene Count</label>
                             <div class="relative">
-                                <input type="number" id="jumlahScene" class="w-full bg-white rounded-xl p-2.5 text-sm outline-none shadow-sm text-slate-700 placeholder-slate-300 border border-transparent focus:ring-2 focus:ring-blue-300" placeholder="Auto">
-                                <button type="button" onclick="document.getElementById('jumlahScene').value=''" class="absolute right-2 top-2 text-[10px] font-bold text-slate-600 hover:text-slate-800 bg-[#d2ecff] px-2 py-1 rounded-lg">Auto</button>
+                                <input type="number" id="jumlahScene" class="w-full bg-white border border-pink-100 rounded-xl p-2.5 text-sm outline-none shadow-sm text-gray-700 placeholder-pink-200 focus:ring-2 focus:ring-pink-300" placeholder="Auto">
+                                <button type="button" onclick="document.getElementById('jumlahScene').value=''" class="absolute right-2 top-2 text-[10px] font-bold text-indigo-400 hover:text-indigo-600 bg-indigo-50 px-2 py-1 rounded-lg border border-indigo-100">Auto</button>
                             </div>
                         </div>
 
                         <div>
-                            <label class="block text-[10px] font-bold text-center text-slate-700 uppercase tracking-wider mb-2">Aspect Ratio</label>
-                            <div class="flex p-1 bg-[#d2ecff] rounded-xl shadow-inner">
-                                <button type="button" id="btnRatio169" class="flex-1 bg-white text-slate-800 shadow-sm py-1.5 rounded-lg text-[10px] font-bold transition-all">16:9</button>
-                                <button type="button" id="btnRatio916" class="flex-1 text-slate-500 hover:text-slate-800 py-1.5 rounded-lg text-[10px] font-bold transition-all bg-transparent">9:16</button>
+                            <label class="block text-[10px] font-extrabold text-center bg-gradient-to-r from-indigo-500 to-pink-500 bg-clip-text text-transparent uppercase tracking-wider mb-2">Aspect Ratio</label>
+                            <div class="flex p-1 bg-indigo-50/50 border border-indigo-100 rounded-xl shadow-inner">
+                                <button type="button" id="btnRatio169" class="flex-1 bg-white text-indigo-500 shadow-sm py-1.5 rounded-lg text-[10px] font-bold transition-all border border-indigo-100">16:9</button>
+                                <button type="button" id="btnRatio916" class="flex-1 text-pink-300 hover:text-pink-500 py-1.5 rounded-lg text-[10px] font-bold transition-all border border-transparent">9:16</button>
                             </div>
                         </div>
                     </div>
 
                     <!-- Pengaturan Durasi -->
-                    <div class="bg-[#d2ecff] p-3.5 rounded-2xl shadow-sm">
-                        <label class="block text-[10px] font-bold text-slate-700 uppercase tracking-wider mb-2">Duration Settings</label>
+                    <div class="bg-white p-3.5 rounded-2xl border border-pink-100 shadow-sm">
+                        <label class="block text-[10px] font-extrabold bg-gradient-to-r from-indigo-500 to-pink-500 bg-clip-text text-transparent uppercase tracking-wider mb-2">Duration Settings</label>
                         <div class="flex gap-2 mb-2.5">
-                            <select id="tipeDurasi" class="w-3/5 bg-white rounded-xl p-2 text-xs outline-none cursor-pointer text-slate-700 border border-transparent focus:ring-2 focus:ring-blue-300">
+                            <select id="tipeDurasi" class="w-3/5 bg-orange-50/50 border border-pink-100 rounded-xl p-2 text-xs outline-none cursor-pointer text-gray-600 focus:ring-2 focus:ring-pink-300">
                                 <option value="per_scene">Per Scene</option>
                                 <option value="total">Total Duration</option>
                             </select>
-                            <input type="number" id="inputDurasi" class="w-2/5 bg-white rounded-xl p-2 text-xs outline-none text-center text-slate-700 placeholder-slate-300 border border-transparent focus:ring-2 focus:ring-blue-300" placeholder="Secs">
+                            <input type="number" id="inputDurasi" class="w-2/5 bg-orange-50/50 border border-pink-100 rounded-xl p-2 text-xs outline-none text-center text-gray-700 placeholder-pink-300 focus:ring-2 focus:ring-pink-300" placeholder="Secs">
                         </div>
                         <div class="flex gap-1.5">
-                            <button type="button" onclick="document.getElementById('inputDurasi').value='5'" class="flex-1 bg-white text-slate-600 py-1.5 rounded-lg text-[10px] font-bold hover:bg-slate-50 transition-colors shadow-sm">5s</button>
-                            <button type="button" onclick="document.getElementById('inputDurasi').value='15'" class="flex-1 bg-white text-slate-600 py-1.5 rounded-lg text-[10px] font-bold hover:bg-slate-50 transition-colors shadow-sm">15s</button>
-                            <button type="button" onclick="document.getElementById('inputDurasi').value='60'" class="flex-1 bg-white text-slate-600 py-1.5 rounded-lg text-[10px] font-bold hover:bg-slate-50 transition-colors shadow-sm">60s</button>
+                            <button type="button" onclick="document.getElementById('inputDurasi').value='5'" class="flex-1 bg-white border border-pink-100 text-indigo-400 py-1.5 rounded-lg text-[10px] font-bold hover:bg-indigo-50 transition-colors shadow-sm">5s</button>
+                            <button type="button" onclick="document.getElementById('inputDurasi').value='15'" class="flex-1 bg-white border border-pink-100 text-indigo-400 py-1.5 rounded-lg text-[10px] font-bold hover:bg-indigo-50 transition-colors shadow-sm">15s</button>
+                            <button type="button" onclick="document.getElementById('inputDurasi').value='60'" class="flex-1 bg-white border border-pink-100 text-indigo-400 py-1.5 rounded-lg text-[10px] font-bold hover:bg-indigo-50 transition-colors shadow-sm">60s</button>
                         </div>
                     </div>
                 </div>
                 
                 <!-- Action Button -->
-                <div class="p-5 md:p-6 bg-[#b9dfff] mt-auto">
-                    <button type="submit" id="btnGenerate" class="w-full py-3.5 bg-[#ffb8ce] text-slate-800 rounded-2xl font-bold shadow-sm hover:bg-[#ffa1bb] active:scale-95 transition-all flex justify-center items-center gap-2 text-sm md:text-base border border-transparent">
+                <div class="p-5 md:p-6 bg-white/50 backdrop-blur-sm border-t border-pink-100 mt-auto">
+                    <button type="submit" id="btnGenerate" class="w-full py-3.5 bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 text-white rounded-2xl font-extrabold shadow-xl shadow-pink-200/50 hover:scale-[1.02] active:scale-95 transition-transform flex justify-center items-center gap-2 text-sm md:text-base border border-pink-200/50">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" />
                         </svg>
@@ -249,27 +263,27 @@
             <!-- Header Output -->
             <div id="outputHeader" class="hidden max-w-4xl mx-auto mb-6 flex flex-col md:flex-row justify-between items-start gap-4">
                 <div class="max-w-2xl">
-                    <h2 class="text-2xl md:text-3xl font-extrabold text-slate-800" style="font-family: 'Fredoka', sans-serif;">CeritaAjaib Output</h2>
-                    <h3 id="outJudul" class="text-xl md:text-2xl font-bold text-slate-600 mt-1" style="font-family: 'Fredoka', sans-serif;">"Judul Cerita"</h3>
-                    <p id="outDeskripsi" class="text-sm text-slate-600 mt-2 leading-relaxed">Deskripsi video akan muncul di sini.</p>
+                    <h2 class="text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-indigo-500 via-purple-400 to-pink-400 bg-clip-text text-transparent" style="font-family: 'Fredoka', sans-serif;">CeritaAjaib Output</h2>
+                    <h3 id="outJudul" class="text-xl md:text-2xl font-bold text-indigo-800 mt-1" style="font-family: 'Fredoka', sans-serif;">"Judul Cerita"</h3>
+                    <p id="outDeskripsi" class="text-sm text-gray-600 mt-2 leading-relaxed">Deskripsi video akan muncul di sini.</p>
                 </div>
-                <div class="text-xs font-bold text-slate-600 bg-white px-4 py-2 rounded-xl border border-slate-200 shadow-sm flex gap-3 shrink-0 mt-2 md:mt-0">
-                    <span>Scenes: <b id="statScenes" class="text-slate-800">0</b></span>
-                    <span class="w-px bg-slate-200"></span>
-                    <span>Total: <b id="statDuration" class="text-slate-800">0s</b></span>
+                <div class="text-xs font-bold text-indigo-500 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-xl border border-pink-100 shadow-sm flex gap-3 shrink-0 mt-2 md:mt-0">
+                    <span>Scenes: <b id="statScenes" class="text-pink-400">0</b></span>
+                    <span class="w-px bg-indigo-200"></span>
+                    <span>Total: <b id="statDuration" class="text-pink-400">0s</b></span>
                 </div>
             </div>
 
             <div id="canvasContainer" class="flex flex-col gap-6 max-w-4xl mx-auto">
                 <!-- Empty State -->
                 <div class="h-[65vh] flex flex-col items-center justify-center text-center opacity-80">
-                    <div class="bg-[#bcc8d8] p-6 rounded-full mb-5 shadow-sm transform hover:scale-110 transition duration-500">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    <div class="bg-white p-6 rounded-full mb-5 shadow-xl shadow-pink-100 border border-pink-50 transform hover:scale-110 transition duration-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-pink-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                         </svg>
                     </div>
-                    <h2 class="text-2xl font-bold text-slate-700" style="font-family: 'Fredoka', sans-serif;">BoardAjaib Masih Kosong</h2>
-                    <p class="text-sm text-slate-500 mt-2 max-w-sm mx-auto leading-relaxed">Isi ide cerita ajaibmu di panel kiri, lalu klik <b class="text-slate-700">Generate</b> untuk mulai merakit adegan.</p>
+                    <h2 class="text-2xl font-extrabold bg-gradient-to-r from-indigo-400 to-pink-400 bg-clip-text text-transparent" style="font-family: 'Fredoka', sans-serif;">BoardAjaib Masih Kosong</h2>
+                    <p class="text-sm text-gray-400 mt-2 max-w-sm mx-auto leading-relaxed">Isi ide cerita ajaibmu di panel kiri, lalu klik <b class="text-pink-400">Generate</b> untuk mulai merakit adegan.</p>
                 </div>
             </div>
             
@@ -280,42 +294,42 @@
     <!-- Modal PanduanAjaib -->
     <div id="modalPanduan" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6">
         <!-- Backdrop -->
-        <div id="backdropPanduan" class="absolute inset-0 bg-slate-900/30 backdrop-blur-sm transition-opacity cursor-pointer"></div>
+        <div id="backdropPanduan" class="absolute inset-0 bg-indigo-900/30 backdrop-blur-sm transition-opacity cursor-pointer"></div>
         
         <!-- Modal Content -->
-        <div class="relative w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row h-[90vh] md:h-[80vh] animate-[fadeIn_0.3s_ease-out]">
+        <div class="relative w-full max-w-5xl bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-pink-100 overflow-hidden flex flex-col md:flex-row h-[90vh] md:h-[80vh] animate-[fadeIn_0.3s_ease-out]">
             
             <!-- Sidebar Menu Panduan -->
-            <div class="w-full md:w-72 bg-[#fdfbf6] border-b md:border-b-0 md:border-r border-slate-200 shrink-0 flex flex-col">
-                <div class="p-4 md:p-6 border-b border-slate-200 shrink-0">
-                    <h2 class="text-lg md:text-xl font-bold text-slate-800 flex items-center gap-2" style="font-family: 'Fredoka', sans-serif;">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-slate-600" viewBox="0 0 20 20" fill="currentColor"><path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" /></svg>
+            <div class="w-full md:w-72 bg-indigo-50/50 border-b md:border-b-0 md:border-r border-indigo-100 shrink-0 flex flex-col">
+                <div class="p-4 md:p-6 border-b border-indigo-100/50 shrink-0">
+                    <h2 class="text-lg md:text-xl font-extrabold bg-gradient-to-r from-indigo-500 to-pink-500 bg-clip-text text-transparent flex items-center gap-2" style="font-family: 'Fredoka', sans-serif;">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-400" viewBox="0 0 20 20" fill="currentColor"><path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" /></svg>
                         Buku Panduan
                     </h2>
                 </div>
                 <!-- Menu Horizontal scroll di HP/Layar kecil, Vertikal di Laptop -->
-                <div class="flex flex-row md:flex-col overflow-x-auto md:overflow-x-hidden md:overflow-y-auto custom-scrollbar flex-1 md:py-3 bg-transparent">
-                    <button class="tab-btn active shrink-0 w-auto md:w-full text-left px-4 md:px-5 py-3 md:py-3.5 text-xs md:text-sm font-bold transition-all flex items-center gap-2 md:gap-3 bg-white text-slate-800 border-b-4 md:border-b-0 md:border-l-4 border-slate-600 shadow-sm" data-target="step1">
+                <div class="flex flex-row md:flex-col overflow-x-auto md:overflow-x-hidden md:overflow-y-auto custom-scrollbar flex-1 md:py-3 bg-white/30 md:bg-transparent">
+                    <button class="tab-btn active shrink-0 w-auto md:w-full text-left px-4 md:px-5 py-3 md:py-3.5 text-xs md:text-sm font-bold transition-all flex items-center gap-2 md:gap-3 bg-white text-indigo-500 border-b-4 md:border-b-0 md:border-l-4 border-indigo-400 shadow-sm" data-target="step1">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" /></svg>
                         <span class="whitespace-nowrap md:whitespace-normal">1. Persiapan API</span>
                     </button>
-                    <button class="tab-btn shrink-0 w-auto md:w-full text-left px-4 md:px-5 py-3 md:py-3.5 text-xs md:text-sm font-bold transition-all flex items-center gap-2 md:gap-3 text-slate-500 hover:bg-slate-100 hover:text-slate-700 border-b-4 md:border-b-0 md:border-l-4 border-transparent" data-target="step2">
+                    <button class="tab-btn shrink-0 w-auto md:w-full text-left px-4 md:px-5 py-3 md:py-3.5 text-xs md:text-sm font-bold transition-all flex items-center gap-2 md:gap-3 text-gray-500 hover:bg-indigo-50/80 hover:text-indigo-500 border-b-4 md:border-b-0 md:border-l-4 border-transparent" data-target="step2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
                         <span class="whitespace-nowrap md:whitespace-normal">2. Form & Eksekusi</span>
                     </button>
-                    <button class="tab-btn shrink-0 w-auto md:w-full text-left px-4 md:px-5 py-3 md:py-3.5 text-xs md:text-sm font-bold transition-all flex items-center gap-2 md:gap-3 text-slate-500 hover:bg-slate-100 hover:text-slate-700 border-b-4 md:border-b-0 md:border-l-4 border-transparent" data-target="step3">
+                    <button class="tab-btn shrink-0 w-auto md:w-full text-left px-4 md:px-5 py-3 md:py-3.5 text-xs md:text-sm font-bold transition-all flex items-center gap-2 md:gap-3 text-gray-500 hover:bg-indigo-50/80 hover:text-indigo-500 border-b-4 md:border-b-0 md:border-l-4 border-transparent" data-target="step3">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                         <span class="whitespace-nowrap md:whitespace-normal">3. Text to Image</span>
                     </button>
-                    <button class="tab-btn shrink-0 w-auto md:w-full text-left px-4 md:px-5 py-3 md:py-3.5 text-xs md:text-sm font-bold transition-all flex items-center gap-2 md:gap-3 text-slate-500 hover:bg-slate-100 hover:text-slate-700 border-b-4 md:border-b-0 md:border-l-4 border-transparent" data-target="step4">
+                    <button class="tab-btn shrink-0 w-auto md:w-full text-left px-4 md:px-5 py-3 md:py-3.5 text-xs md:text-sm font-bold transition-all flex items-center gap-2 md:gap-3 text-gray-500 hover:bg-indigo-50/80 hover:text-indigo-500 border-b-4 md:border-b-0 md:border-l-4 border-transparent" data-target="step4">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
                         <span class="whitespace-nowrap md:whitespace-normal">4. Image to Video</span>
                     </button>
-                    <button class="tab-btn shrink-0 w-auto md:w-full text-left px-4 md:px-5 py-3 md:py-3.5 text-xs md:text-sm font-bold transition-all flex items-center gap-2 md:gap-3 text-slate-500 hover:bg-slate-100 hover:text-slate-700 border-b-4 md:border-b-0 md:border-l-4 border-transparent" data-target="step5">
+                    <button class="tab-btn shrink-0 w-auto md:w-full text-left px-4 md:px-5 py-3 md:py-3.5 text-xs md:text-sm font-bold transition-all flex items-center gap-2 md:gap-3 text-gray-500 hover:bg-indigo-50/80 hover:text-indigo-500 border-b-4 md:border-b-0 md:border-l-4 border-transparent" data-target="step5">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
                         <span class="whitespace-nowrap md:whitespace-normal">5. Voiceover</span>
                     </button>
-                    <button class="tab-btn shrink-0 w-auto md:w-full text-left px-4 md:px-5 py-3 md:py-3.5 text-xs md:text-sm font-bold transition-all flex items-center gap-2 md:gap-3 text-slate-500 hover:bg-slate-100 hover:text-slate-700 border-b-4 md:border-b-0 md:border-l-4 border-transparent" data-target="step6">
+                    <button class="tab-btn shrink-0 w-auto md:w-full text-left px-4 md:px-5 py-3 md:py-3.5 text-xs md:text-sm font-bold transition-all flex items-center gap-2 md:gap-3 text-gray-500 hover:bg-indigo-50/80 hover:text-indigo-500 border-b-4 md:border-b-0 md:border-l-4 border-transparent" data-target="step6">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" /></svg>
                         <span class="whitespace-nowrap md:whitespace-normal">6. Editing</span>
                     </button>
@@ -325,28 +339,28 @@
             <!-- Content Area Panduan -->
             <div class="flex-1 flex flex-col bg-white overflow-hidden relative">
                 <!-- Tombol Close -->
-                <button id="btnClosePanduan" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors z-10 bg-white/50 backdrop-blur-sm">
+                <button id="btnClosePanduan" class="absolute top-4 right-4 p-2 text-gray-400 hover:text-rose-500 hover:bg-rose-50 rounded-full transition-colors z-10 bg-white/50 backdrop-blur-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
 
-                <div class="p-6 md:p-10 overflow-y-auto custom-scrollbar h-full text-slate-700">
+                <div class="p-6 md:p-10 overflow-y-auto custom-scrollbar h-full">
                     
                     <!-- Step 1 -->
                     <div id="step1" class="tab-content block animate-[fadeIn_0.3s_ease-out]">
-                        <div class="flex items-center gap-4 mb-6 pb-6 border-b border-slate-200">
-                            <div class="bg-slate-100 text-slate-600 p-3.5 rounded-2xl shrink-0">
+                        <div class="flex items-center gap-4 mb-6 pb-6 border-b border-indigo-100/60">
+                            <div class="bg-gradient-to-br from-indigo-400 to-blue-500 text-white p-3.5 rounded-2xl shadow-lg shadow-indigo-200 shrink-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" /></svg>
                             </div>
                             <div>
-                                <h3 class="text-2xl font-bold text-slate-800" style="font-family: 'Fredoka', sans-serif;">Mendapatkan API Key</h3>
-                                <p class="text-sm text-slate-500 mt-0.5">Langkah pertama untuk menghubungkan otak AI.</p>
+                                <h3 class="text-2xl font-extrabold text-gray-800" style="font-family: 'Fredoka', sans-serif;">Mendapatkan API Key</h3>
+                                <p class="text-sm text-gray-500 mt-0.5">Langkah pertama untuk menghubungkan otak AI.</p>
                             </div>
                         </div>
                         <div class="space-y-4">
-                            <p class="text-sm leading-relaxed">Tools ini menggunakan AI Google Gemini untuk berpikir. Anda memerlukan "Kunci Akses" (API Key) gratis dari Google.</p>
-                            <div class="bg-slate-50 border border-slate-200 p-5 rounded-2xl">
-                                <ol class="list-decimal list-inside text-sm space-y-3">
-                                    <li>Buka situs <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-[#4a8cdd] font-bold hover:underline">Google AI Studio ↗</a> dan login dengan akun Google/Gmail Anda.</li>
+                            <p class="text-sm text-gray-600 leading-relaxed">Tools ini menggunakan AI Google Gemini untuk berpikir. Anda memerlukan "Kunci Akses" (API Key) gratis dari Google.</p>
+                            <div class="bg-indigo-50/50 border border-indigo-100 p-5 rounded-2xl">
+                                <ol class="list-decimal list-inside text-sm text-indigo-800 space-y-3">
+                                    <li>Buka situs <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-pink-500 font-bold hover:underline">Google AI Studio ↗</a> dan login dengan akun Google/Gmail Anda.</li>
                                     <li>Klik tombol biru <b>"Create API key"</b>.</li>
                                     <li>Salin (Copy) deretan teks acak yang panjang tersebut.</li>
                                     <li>Kembali ke tools Storyboard ini, paste key tersebut di kolom <b>"API Key"</b> pada menu kiri.</li>
@@ -358,91 +372,91 @@
 
                     <!-- Step 2 -->
                     <div id="step2" class="tab-content hidden animate-[fadeIn_0.3s_ease-out]">
-                        <div class="flex items-center gap-4 mb-6 pb-6 border-b border-slate-200">
-                            <div class="bg-slate-100 text-slate-600 p-3.5 rounded-2xl shrink-0">
+                        <div class="flex items-center gap-4 mb-6 pb-6 border-b border-indigo-100/60">
+                            <div class="bg-gradient-to-br from-pink-400 to-pink-500 text-white p-3.5 rounded-2xl shadow-lg shadow-pink-200 shrink-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
                             </div>
                             <div>
-                                <h3 class="text-2xl font-bold text-slate-800" style="font-family: 'Fredoka', sans-serif;">Form & Eksekusi</h3>
-                                <p class="text-sm text-slate-500 mt-0.5">Meracik ide dan parameter cerita ajaib Anda.</p>
+                                <h3 class="text-2xl font-extrabold text-gray-800" style="font-family: 'Fredoka', sans-serif;">Form & Eksekusi</h3>
+                                <p class="text-sm text-gray-500 mt-0.5">Meracik ide dan parameter cerita ajaib Anda.</p>
                             </div>
                         </div>
                         <div class="space-y-4">
-                            <p class="text-sm leading-relaxed">Setelah API terkoneksi, saatnya menuangkan ide cerita Anda di panel sebelah kiri.</p>
-                            <ul class="space-y-3 text-sm">
-                                <li class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex gap-3">
+                            <p class="text-sm text-gray-600 leading-relaxed">Setelah API terkoneksi, saatnya menuangkan ide cerita Anda di panel sebelah kiri.</p>
+                            <ul class="space-y-3 text-sm text-gray-700">
+                                <li class="bg-pink-50/50 p-4 rounded-xl border border-pink-100 flex gap-3">
                                     <span class="text-xl">💡</span>
                                     <div><b>Saran AI:</b> Kalau Anda sedang buntu, klik tombol "Saran AI ✨". Aplikasi akan mengisikan ide cerita acak secara otomatis!</div>
                                 </li>
-                                <li class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex gap-3">
+                                <li class="bg-orange-50 p-4 rounded-xl border border-orange-100 flex gap-3">
                                     <span class="text-xl">✍️</span>
                                     <div><b>Karakter / Subjek:</b> Isi bagian ini sedetail mungkin (misal: "Pria berjaket merah, rambut pirang"). Ini sangat penting agar AI menjaga tokoh utama Anda tetap konsisten di setiap scene.</div>
                                 </li>
-                                <li class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex gap-3">
+                                <li class="bg-orange-50 p-4 rounded-xl border border-orange-100 flex gap-3">
                                     <span class="text-xl">🎨</span>
                                     <div><b>Visual Style:</b> Pilih gaya gambar kesukaan Anda (misal Anime atau Cinematic). AI akan meracik prompt khusus untuk menghasilkan gambar sesuai gaya tersebut.</div>
                                 </li>
                             </ul>
-                            <p class="text-sm text-slate-700 font-bold mt-4 bg-slate-100 p-3 rounded-xl border border-slate-200 text-center">Jika semua sudah diisi, klik tombol besar "Generate Storyboard" di paling bawah!</p>
+                            <p class="text-sm text-indigo-600 font-bold mt-4 bg-indigo-50 p-3 rounded-xl border border-indigo-100 text-center">Jika semua sudah diisi, klik tombol besar "Generate Storyboard" di paling bawah!</p>
                         </div>
                     </div>
 
                     <!-- Step 3 -->
                     <div id="step3" class="tab-content hidden animate-[fadeIn_0.3s_ease-out]">
-                        <div class="flex items-center gap-4 mb-6 pb-6 border-b border-slate-200">
-                            <div class="bg-slate-100 text-slate-600 p-3.5 rounded-2xl shrink-0">
+                        <div class="flex items-center gap-4 mb-6 pb-6 border-b border-indigo-100/60">
+                            <div class="bg-gradient-to-br from-blue-400 to-sky-500 text-white p-3.5 rounded-2xl shadow-lg shadow-sky-200 shrink-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                             </div>
                             <div>
-                                <h3 class="text-2xl font-bold text-slate-800" style="font-family: 'Fredoka', sans-serif;">Text to Image</h3>
-                                <p class="text-sm text-slate-500 mt-0.5">Mengubah naskah adegan menjadi foto visual pertama.</p>
+                                <h3 class="text-2xl font-extrabold text-gray-800" style="font-family: 'Fredoka', sans-serif;">Text to Image</h3>
+                                <p class="text-sm text-gray-500 mt-0.5">Mengubah naskah adegan menjadi foto visual pertama.</p>
                             </div>
                         </div>
                         <div class="space-y-4">
-                            <p class="text-sm leading-relaxed">Sekarang Anda sudah punya naskah per *scene*. Langkah pertama adalah menyulap kotak teks <b>"1. Visual Prompt (Image)"</b> menjadi gambar diam (foto).</p>
-                            <div class="bg-slate-50 border border-slate-200 p-5 rounded-2xl">
-                                <h4 class="font-bold text-sm mb-3">🛠️ Rekomendasi Tools Gratis:</h4>
+                            <p class="text-sm text-gray-600 leading-relaxed">Sekarang Anda sudah punya naskah per *scene*. Langkah pertama adalah menyulap kotak teks <b>"1. Visual Prompt (Image)"</b> menjadi gambar diam (foto).</p>
+                            <div class="bg-sky-50/50 border border-sky-100 p-5 rounded-2xl">
+                                <h4 class="font-bold text-sky-800 text-sm mb-3">🛠️ Rekomendasi Tools Gratis:</h4>
                                 <div class="space-y-3">
-                                    <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-200">
-                                        <p class="font-bold text-sm text-[#4a8cdd]">1. Bing Image Creator (DALL-E 3)</p>
-                                        <p class="text-xs text-slate-500 mt-1">Sangat pintar mengikuti prompt. Gratis token harian pakai akun Microsoft.</p>
+                                    <div class="bg-white p-3 rounded-xl shadow-sm border border-sky-50">
+                                        <p class="font-bold text-sm text-sky-600">1. Bing Image Creator (DALL-E 3)</p>
+                                        <p class="text-xs text-gray-500 mt-1">Sangat pintar mengikuti prompt. Gratis token harian pakai akun Microsoft.</p>
                                     </div>
-                                    <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-200">
-                                        <p class="font-bold text-sm text-[#4a8cdd]">2. Leonardo.ai</p>
-                                        <p class="text-xs text-slate-500 mt-1">Kualitas gambar sangat estetik dan cinematic. Gratis 150 token setiap hari.</p>
+                                    <div class="bg-white p-3 rounded-xl shadow-sm border border-sky-50">
+                                        <p class="font-bold text-sm text-sky-600">2. Leonardo.ai</p>
+                                        <p class="text-xs text-gray-500 mt-1">Kualitas gambar sangat estetik dan cinematic. Gratis 150 token setiap hari.</p>
                                     </div>
                                 </div>
                             </div>
-                            <p class="text-sm text-[#4a8cdd] font-bold mt-2">Cara Pakai: Klik tombol "Copy" pada kotak nomor 1, lalu Paste ke web di atas. Simpan fotonya!</p>
+                            <p class="text-sm text-pink-500 font-bold mt-2">Cara Pakai: Klik tombol "Copy" pada kotak nomor 1, lalu Paste ke web di atas. Simpan fotonya!</p>
                         </div>
                     </div>
 
                     <!-- Step 4 -->
                     <div id="step4" class="tab-content hidden animate-[fadeIn_0.3s_ease-out]">
-                        <div class="flex items-center gap-4 mb-6 pb-6 border-b border-slate-200">
-                            <div class="bg-slate-100 text-slate-600 p-3.5 rounded-2xl shrink-0">
+                        <div class="flex items-center gap-4 mb-6 pb-6 border-b border-indigo-100/60">
+                            <div class="bg-gradient-to-br from-pink-300 to-rose-400 text-white p-3.5 rounded-2xl shadow-lg shadow-pink-200 shrink-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
                             </div>
                             <div>
-                                <h3 class="text-2xl font-bold text-slate-800" style="font-family: 'Fredoka', sans-serif;">Image to Video</h3>
-                                <p class="text-sm text-slate-500 mt-0.5">Menggerakkan foto diam menjadi video sinematik.</p>
+                                <h3 class="text-2xl font-extrabold text-gray-800" style="font-family: 'Fredoka', sans-serif;">Image to Video</h3>
+                                <p class="text-sm text-gray-500 mt-0.5">Menggerakkan foto diam menjadi video sinematik.</p>
                             </div>
                         </div>
                         <div class="space-y-4">
-                            <p class="text-sm leading-relaxed">Bagian paling seru! Upload foto dari tahap sebelumnya, lalu gunakan kotak <b>"2. Motion Prompt (Video)"</b> untuk memberi perintah pergerakan pada AI Video.</p>
-                            <div class="bg-slate-50 border border-slate-200 p-5 rounded-2xl">
-                                <h4 class="font-bold text-sm mb-3">🛠️ Rekomendasi Tools Video (Gratis):</h4>
+                            <p class="text-sm text-gray-600 leading-relaxed">Bagian paling seru! Upload foto dari tahap sebelumnya, lalu gunakan kotak <b>"2. Motion Prompt (Video)"</b> untuk memberi perintah pergerakan pada AI Video.</p>
+                            <div class="bg-pink-50/50 border border-pink-100 p-5 rounded-2xl">
+                                <h4 class="font-bold text-pink-800 text-sm mb-3">🛠️ Rekomendasi Tools Video (Gratis):</h4>
                                 <div class="space-y-3">
-                                    <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-200">
-                                        <p class="font-bold text-sm text-[#4a8cdd] flex items-center justify-between">
+                                    <div class="bg-white p-3 rounded-xl shadow-sm border border-pink-50">
+                                        <p class="font-bold text-sm text-pink-500 flex items-center justify-between">
                                             1. Haiper.ai
-                                            <span class="text-[9px] bg-[#d2ecff] text-[#4a8cdd] px-2 py-0.5 rounded-full border border-[#a6d4fa]">Paling Disarankan</span>
+                                            <span class="text-[9px] bg-pink-100 text-pink-600 px-2 py-0.5 rounded-full border border-pink-200">Paling Disarankan</span>
                                         </p>
-                                        <p class="text-xs text-slate-500 mt-1">Sepenuhnya gratis! Hasilnya sangat halus untuk durasi 2-4 detik.</p>
+                                        <p class="text-xs text-gray-500 mt-1">Sepenuhnya gratis! Hasilnya sangat halus untuk durasi 2-4 detik.</p>
                                     </div>
-                                    <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-200">
-                                        <p class="font-bold text-sm text-[#4a8cdd]">2. Kling AI / Luma Dream Machine</p>
-                                        <p class="text-xs text-slate-500 mt-1">Memberikan kredit gratis setiap hari. Sangat realistis untuk manusia.</p>
+                                    <div class="bg-white p-3 rounded-xl shadow-sm border border-pink-50">
+                                        <p class="font-bold text-sm text-pink-500">2. Kling AI / Luma Dream Machine</p>
+                                        <p class="text-xs text-gray-500 mt-1">Memberikan kredit gratis setiap hari. Sangat realistis untuk manusia.</p>
                                     </div>
                                 </div>
                             </div>
@@ -451,27 +465,27 @@
 
                     <!-- Step 5 -->
                     <div id="step5" class="tab-content hidden animate-[fadeIn_0.3s_ease-out]">
-                        <div class="flex items-center gap-4 mb-6 pb-6 border-b border-slate-200">
-                            <div class="bg-slate-100 text-slate-600 p-3.5 rounded-2xl shrink-0">
+                        <div class="flex items-center gap-4 mb-6 pb-6 border-b border-indigo-100/60">
+                            <div class="bg-gradient-to-br from-orange-300 to-amber-400 text-white p-3.5 rounded-2xl shadow-lg shadow-orange-200 shrink-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
                             </div>
                             <div>
-                                <h3 class="text-2xl font-bold text-slate-800" style="font-family: 'Fredoka', sans-serif;">Voiceover (Suara)</h3>
-                                <p class="text-sm text-slate-500 mt-0.5">Menambahkan narasi dan dialog agar video lebih hidup.</p>
+                                <h3 class="text-2xl font-extrabold text-gray-800" style="font-family: 'Fredoka', sans-serif;">Voiceover (Suara)</h3>
+                                <p class="text-sm text-gray-500 mt-0.5">Menambahkan narasi dan dialog agar video lebih hidup.</p>
                             </div>
                         </div>
                         <div class="space-y-4">
-                            <p class="text-sm leading-relaxed">Salin teks pada kotak <b>"3. Voiceover / Narration"</b> dan ubah menjadi suara dubbing profesional menggunakan AI.</p>
-                            <div class="bg-slate-50 border border-slate-200 p-5 rounded-2xl">
-                                <h4 class="font-bold text-sm mb-3">🛠️ Rekomendasi Tools Suara:</h4>
+                            <p class="text-sm text-gray-600 leading-relaxed">Salin teks pada kotak <b>"3. Voiceover / Narration"</b> dan ubah menjadi suara dubbing profesional menggunakan AI.</p>
+                            <div class="bg-orange-50/50 border border-orange-100 p-5 rounded-2xl">
+                                <h4 class="font-bold text-amber-800 text-sm mb-3">🛠️ Rekomendasi Tools Suara:</h4>
                                 <div class="space-y-3">
-                                    <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-200">
-                                        <p class="font-bold text-sm text-[#4a8cdd]">1. ElevenLabs</p>
-                                        <p class="text-xs text-slate-500 mt-1">Suara AI paling natural di dunia. Ada kuota gratis bulanan.</p>
+                                    <div class="bg-white p-3 rounded-xl shadow-sm border border-orange-50">
+                                        <p class="font-bold text-sm text-amber-600">1. ElevenLabs</p>
+                                        <p class="text-xs text-gray-500 mt-1">Suara AI paling natural di dunia. Ada kuota gratis bulanan.</p>
                                     </div>
-                                    <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-200">
-                                        <p class="font-bold text-sm text-[#4a8cdd]">2. Fitur Text-to-Speech CapCut</p>
-                                        <p class="text-xs text-slate-500 mt-1">Paling praktis karena langsung dilakukan di dalam aplikasi edit video.</p>
+                                    <div class="bg-white p-3 rounded-xl shadow-sm border border-orange-50">
+                                        <p class="font-bold text-sm text-amber-600">2. Fitur Text-to-Speech CapCut</p>
+                                        <p class="text-xs text-gray-500 mt-1">Paling praktis karena langsung dilakukan di dalam aplikasi edit video.</p>
                                     </div>
                                 </div>
                             </div>
@@ -480,24 +494,24 @@
 
                     <!-- Step 6 -->
                     <div id="step6" class="tab-content hidden animate-[fadeIn_0.3s_ease-out]">
-                        <div class="flex items-center gap-4 mb-6 pb-6 border-b border-slate-200">
-                            <div class="bg-slate-100 text-slate-600 p-3.5 rounded-2xl shrink-0">
+                        <div class="flex items-center gap-4 mb-6 pb-6 border-b border-indigo-100/60">
+                            <div class="bg-gradient-to-br from-emerald-400 to-teal-500 text-white p-3.5 rounded-2xl shadow-lg shadow-emerald-200 shrink-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" /></svg>
                             </div>
                             <div>
-                                <h3 class="text-2xl font-bold text-slate-800" style="font-family: 'Fredoka', sans-serif;">Editing (Finalisasi)</h3>
-                                <p class="text-sm text-slate-500 mt-0.5">Menyusun potongan video dan merender hasil akhir.</p>
+                                <h3 class="text-2xl font-extrabold text-gray-800" style="font-family: 'Fredoka', sans-serif;">Editing (Finalisasi)</h3>
+                                <p class="text-sm text-gray-500 mt-0.5">Menyusun potongan video dan merender hasil akhir.</p>
                             </div>
                         </div>
                         <div class="space-y-4">
-                            <p class="text-sm leading-relaxed">Semua bahan sudah siap! Potongan video pendek dari AI dan rekaman suara kini tinggal disatukan.</p>
-                            <div class="bg-slate-50 border border-slate-200 p-6 rounded-2xl flex items-center gap-5">
-                                <div class="bg-white p-4 rounded-full shadow-sm border border-slate-200 shrink-0">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-[#4a8cdd]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <p class="text-sm text-gray-600 leading-relaxed">Semua bahan sudah siap! Potongan video pendek dari AI dan rekaman suara kini tinggal disatukan.</p>
+                            <div class="bg-emerald-50/50 border border-emerald-100 p-6 rounded-2xl flex items-center gap-5">
+                                <div class="bg-white p-4 rounded-full shadow-md shrink-0 border border-emerald-50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                                 </div>
                                 <div>
-                                    <h4 class="font-bold text-slate-800 text-base">CapCut (Mobile / PC)</h4>
-                                    <p class="text-sm text-slate-500 mt-1">Aplikasi editing terbaik dan gratis. Susun video sesuai urutan SCENE. Masukkan audionya, tambahkan <i>backsound</i>, dan <b>Mahakarya Anda siap di-upload!</b> 🎉</p>
+                                    <h4 class="font-bold text-emerald-700 text-base">CapCut (Mobile / PC)</h4>
+                                    <p class="text-sm text-gray-600 mt-1">Aplikasi editing terbaik dan gratis. Susun video sesuai urutan SCENE. Masukkan audionya, tambahkan <i>backsound</i>, dan <b>Mahakarya Anda siap di-upload!</b> 🎉</p>
                                 </div>
                             </div>
                         </div>
@@ -533,13 +547,13 @@
             if (type === 'error') {
                 notif.className = "transform transition-all duration-300 translate-x-0 opacity-100 pointer-events-auto bg-white border border-rose-200 rounded-2xl p-4 shadow-xl flex items-start gap-3 w-[320px] md:w-[380px]";
                 titleEl.className = "text-sm font-extrabold text-rose-600 tracking-wide";
-                textEl.className = "text-xs text-slate-600 mt-1 leading-relaxed";
+                textEl.className = "text-xs text-gray-600 mt-1 leading-relaxed";
                 iconEl.className = "text-rose-500 mt-0.5 shrink-0";
             } else if (type === 'info') {
-                notif.className = "transform transition-all duration-300 translate-x-0 opacity-100 pointer-events-auto bg-white border border-[#a6d4fa] rounded-2xl p-4 shadow-xl flex items-start gap-3 w-[320px] md:w-[380px]";
-                titleEl.className = "text-sm font-extrabold text-[#4a8cdd] tracking-wide";
-                textEl.className = "text-xs text-slate-600 mt-1 leading-relaxed";
-                iconEl.className = "text-[#4a8cdd] mt-0.5 shrink-0";
+                notif.className = "transform transition-all duration-300 translate-x-0 opacity-100 pointer-events-auto bg-white border border-indigo-200 rounded-2xl p-4 shadow-xl flex items-start gap-3 w-[320px] md:w-[380px]";
+                titleEl.className = "text-sm font-extrabold text-indigo-500 tracking-wide";
+                textEl.className = "text-xs text-gray-600 mt-1 leading-relaxed";
+                iconEl.className = "text-indigo-400 mt-0.5 shrink-0";
             }
 
             clearTimeout(toastTimeout);
@@ -575,11 +589,11 @@
         tabBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 tabBtns.forEach(b => {
-                    b.classList.remove('bg-white', 'text-slate-800', 'border-slate-600', 'shadow-sm', 'active');
-                    b.classList.add('text-slate-500', 'hover:bg-slate-100', 'hover:text-slate-700', 'border-transparent');
+                    b.classList.remove('bg-white', 'text-indigo-500', 'border-indigo-400', 'shadow-sm', 'active');
+                    b.classList.add('text-gray-500', 'hover:bg-indigo-50/80', 'hover:text-indigo-500', 'border-transparent');
                 });
-                btn.classList.remove('text-slate-500', 'hover:bg-slate-100', 'hover:text-slate-700', 'border-transparent');
-                btn.classList.add('bg-white', 'text-slate-800', 'border-slate-600', 'shadow-sm', 'active');
+                btn.classList.remove('text-gray-500', 'hover:bg-indigo-50/80', 'hover:text-indigo-500', 'border-transparent');
+                btn.classList.add('bg-white', 'text-indigo-500', 'border-indigo-400', 'shadow-sm', 'active');
 
                 tabContents.forEach(c => { c.classList.add('hidden'); c.classList.remove('block'); });
 
@@ -609,8 +623,8 @@
 
         function setRatio(ratio, activeBtn, inactiveBtn) {
             currentRatio = ratio;
-            activeBtn.className = "flex-1 bg-white text-slate-800 shadow-sm py-1.5 rounded-lg text-[10px] font-bold transition-all";
-            inactiveBtn.className = "flex-1 text-slate-500 hover:text-slate-800 py-1.5 rounded-lg text-[10px] font-bold transition-all bg-transparent";
+            activeBtn.className = "flex-1 bg-white text-indigo-500 shadow-sm py-1.5 rounded-lg text-[10px] font-bold transition-all border border-indigo-100";
+            inactiveBtn.className = "flex-1 text-pink-300 hover:text-pink-500 py-1.5 rounded-lg text-[10px] font-bold transition-all border border-transparent";
         }
 
         btn169.addEventListener('click', () => setRatio("16:9", btn169, btn916));
@@ -674,8 +688,8 @@
             isApiValid = false;
             apiModel.innerHTML = "<option>Click Test API first...</option>";
             apiModel.disabled = true;
-            apiModel.classList.add('bg-white/50', 'text-slate-500', 'cursor-not-allowed');
-            apiModel.classList.remove('bg-white', 'text-slate-700');
+            apiModel.classList.add('bg-pink-50/50', 'text-gray-400', 'cursor-not-allowed');
+            apiModel.classList.remove('bg-white', 'text-gray-700');
             apiStatus.classList.add('hidden');
         }
 
@@ -700,14 +714,14 @@
                 } else {
                     isApiValid = true;
                     apiStatus.textContent = "✅ Connected & Valid!";
-                    apiStatus.className = "text-[10px] mt-1.5 font-bold text-emerald-600";
+                    apiStatus.className = "text-[10px] mt-1.5 font-bold text-emerald-500";
                     
                     localStorage.setItem('kerangajaib_api_key', key.trim());
                     document.getElementById('badgeSaved').classList.remove('hidden');
                     
                     apiModel.disabled = false;
-                    apiModel.classList.remove('bg-white/50', 'text-slate-500', 'cursor-not-allowed');
-                    apiModel.classList.add('bg-white', 'text-slate-700');
+                    apiModel.classList.remove('bg-pink-50/50', 'text-gray-400', 'cursor-not-allowed');
+                    apiModel.classList.add('bg-white', 'text-gray-700');
                     
                     const current = apiProvider.value;
                     apiModel.innerHTML = "";
@@ -855,7 +869,7 @@
                     ];
                     
                     const randomGenres = ["Action / Adventure", "Sci-Fi / Cyberpunk", "Fantasy / Magic", "Horror / Thriller", "Romance / Drama", "Slice of Life", "Post-Apocalyptic", "Supernatural / Paranormal"];
-                    const randomStyles = ["🎬 Cinematic / Live Action", "🌸 Anime 90s (Studio Ghibli)", "🧸 3D Animation (Pixar/Disney)", "🎨 Watercolor / Hand-drawn", "🕹️ Cyberpunk / Sci-Fi", "📸 Realistic Photography", "☁️ Soft Pastel (Dreamy)"];
+                    const randomStyles = ["🎬 Cinematic / Live Action", "🌸 Anime 90s (Studio Ghibli)", "🧸 3D Animation (Pixar/Disney)", "🎨 Watercolor / Hand-drawn", "🕹️ Cyberpunk / Sci-Fi", "📸 Realistic Photography", "☁️ Soft Pastel (Dreamy)", "🧶 ClayMotion"];
                     const randomVOs = ["🎙️ Narasi (StoryTeller)", "🗣️ Percakapan (Dialog)", "🎭 Narasi & Percakapan (Campuran)"];
                     const randomRatios = ["16:9", "9:16"];
                     const randomDurTypes = ["per_scene", "total"];
@@ -884,17 +898,17 @@
             document.execCommand('copy');
             const originalText = btn.innerHTML;
             btn.innerHTML = `✅ Copied`;
-            btn.classList.add('text-[#4a8cdd]', 'border-[#a6d4fa]', 'bg-[#d2ecff]');
+            btn.classList.add('text-indigo-500', 'border-indigo-200', 'bg-indigo-50');
             setTimeout(() => { 
                 btn.innerHTML = originalText; 
-                btn.classList.remove('text-[#4a8cdd]', 'border-[#a6d4fa]', 'bg-[#d2ecff]');
+                btn.classList.remove('text-indigo-500', 'border-indigo-200', 'bg-indigo-50');
             }, 2000);
             window.getSelection().removeAllRanges();
         };
 
         // 6. Generate Logic (API Call ke Gemini)
         const form = document.getElementById('promptForm');
-        let lastGeneratedData = null; // Memori untuk menyimpan data JSON terakhir
+        let lastGeneratedData = null;
 
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -954,12 +968,12 @@
             document.getElementById('outputHeader').classList.add('hidden');
             const container = document.getElementById('canvasContainer');
             
-            // Loading UI Canvas
+            // Loading UI Canvas (Pastel Mode)
             container.innerHTML = `
-                <div class="bg-white border border-slate-200 rounded-3xl p-12 text-center flex flex-col items-center shadow-sm">
-                    <div class="inline-block animate-spin rounded-full h-12 w-12 border-[5px] border-[#d2ecff] border-t-[#4a8cdd] mb-6"></div>
-                    <h3 class="font-bold text-xl text-slate-700 mb-2" style="font-family: 'Fredoka', sans-serif;">Menyelam ke Imajinasi...</h3>
-                    <p class="text-sm text-slate-500">Merapalkan mantra prompt ajaib AI 🪄</p>
+                <div class="bg-white border border-pink-100 rounded-3xl p-12 text-center flex flex-col items-center shadow-lg shadow-pink-100/50">
+                    <div class="inline-block animate-spin rounded-full h-12 w-12 border-[5px] border-indigo-100 border-t-pink-400 mb-6"></div>
+                    <h3 class="font-extrabold text-xl bg-gradient-to-r from-indigo-500 to-pink-500 bg-clip-text text-transparent mb-2" style="font-family: 'Fredoka', sans-serif;">Menyelam ke Imajinasi...</h3>
+                    <p class="text-sm text-gray-500">Merapalkan mantra prompt ajaib AI 🪄</p>
                 </div>`;
 
             const promptText = `Kamu adalah Sutradara Film Pemenang Oscar dan Ahli Prompt AI Video Maker.
@@ -1009,7 +1023,6 @@ Balas HANYA dengan format JSON Object baku seperti di bawah ini tanpa markdown/t
                 const jsonText = data.candidates[0].content.parts[0].text;
                 const resultData = JSON.parse(jsonText);
 
-                // Simpan hasil ke memori agar bisa di-export ke JSON
                 lastGeneratedData = resultData;
 
                 document.getElementById('outDeskripsi').innerText = resultData.video_caption || tema;
@@ -1036,7 +1049,7 @@ Balas HANYA dengan format JSON Object baku seperti di bawah ini tanpa markdown/t
             }
         });
 
-        // 7. Render Layout 3 Kotak (Image, Video, Voiceover)
+        // 7. Render Layout 3 Kotak (Image, Video, Voiceover) - Pastel Mode
         function renderCanvas(scenes) {
             const container = document.getElementById('canvasContainer');
             container.innerHTML = '';
@@ -1053,12 +1066,12 @@ Balas HANYA dengan format JSON Object baku seperti di bawah ini tanpa markdown/t
 
             scenes.forEach((scene, index) => {
                 const htmlCard = `
-                <div class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition duration-300">
+                <div class="bg-white/90 backdrop-blur-md border border-pink-100 rounded-3xl overflow-hidden shadow-lg shadow-pink-100/50 hover:shadow-xl hover:shadow-pink-200/50 transition duration-300">
                     
                     <!-- Header Scene -->
-                    <div class="bg-slate-50 px-5 py-3 border-b border-slate-200 flex justify-between items-center">
-                        <span class="text-[11px] font-bold text-white bg-slate-700 px-3.5 py-1 rounded-md shadow-sm">SCENE 0${scene.scene_number || (index+1)}</span>
-                        <span class="text-xs font-bold text-slate-500 bg-white px-3 py-1 rounded-md border border-slate-200 shadow-sm">${scene.duration || "5s"}</span>
+                    <div class="bg-gradient-to-r from-indigo-50/50 via-purple-50/50 to-pink-50/50 px-5 py-3 border-b border-pink-100 flex justify-between items-center">
+                        <span class="text-[11px] font-extrabold text-white bg-gradient-to-r from-indigo-400 to-pink-400 px-3.5 py-1 rounded-full shadow-sm">SCENE 0${scene.scene_number || (index+1)}</span>
+                        <span class="text-xs font-bold text-pink-500 bg-white px-3 py-1 rounded-lg border border-pink-100 shadow-sm">${scene.duration || "5s"}</span>
                     </div>
                     
                     <!-- Content Body -->
@@ -1067,37 +1080,37 @@ Balas HANYA dengan format JSON Object baku seperti di bawah ini tanpa markdown/t
                         <!-- Box 1: Image Prompt -->
                         <div class="relative group">
                             <div class="flex justify-between items-center mb-2 gap-2">
-                                <label class="text-[10px] font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5 leading-tight">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-slate-400 shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" /></svg>
+                                <label class="text-[10px] font-extrabold bg-gradient-to-r from-indigo-500 to-pink-500 bg-clip-text text-transparent uppercase tracking-wider flex items-center gap-1.5 leading-tight">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-indigo-400 shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" /></svg>
                                     1. Visual Prompt (Image)
                                 </label>
-                                <button onclick="copyText(this, this.parentElement.nextElementSibling)" class="text-[10px] font-bold text-slate-500 hover:text-slate-800 bg-white border border-slate-200 px-2.5 py-1 rounded-lg shadow-sm transition-colors opacity-100 lg:opacity-0 lg:group-hover:opacity-100 shrink-0">Copy</button>
+                                <button onclick="copyText(this, this.parentElement.nextElementSibling)" class="text-[10px] font-bold text-pink-400 hover:text-indigo-500 bg-white border border-pink-100 px-2.5 py-1 rounded-lg shadow-sm transition-colors opacity-100 lg:opacity-0 lg:group-hover:opacity-100 shrink-0">Copy</button>
                             </div>
-                            <textarea class="w-full text-sm text-slate-700 bg-slate-50 p-4 rounded-2xl border border-slate-200 focus:border-[#a6d4fa] focus:ring-1 focus:ring-[#a6d4fa] outline-none resize-y transition-colors leading-relaxed" rows="3">${scene.prompt_image || ""}</textarea>
+                            <textarea class="w-full text-sm text-gray-700 bg-indigo-50/50 p-4 rounded-2xl border border-indigo-100/50 focus:border-indigo-300 focus:ring-1 focus:ring-indigo-300 outline-none resize-y transition-colors leading-relaxed" rows="3">${scene.prompt_image || ""}</textarea>
                         </div>
 
                         <!-- Box 2: Video Prompt -->
-                        <div class="relative group pt-4 border-t border-slate-100">
+                        <div class="relative group pt-4 border-t border-pink-50">
                             <div class="flex justify-between items-center mb-2 gap-2">
-                                <label class="text-[10px] font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5 leading-tight">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-slate-400 shrink-0" viewBox="0 0 20 20" fill="currentColor"><path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" /></svg>
+                                <label class="text-[10px] font-extrabold bg-gradient-to-r from-indigo-500 to-pink-500 bg-clip-text text-transparent uppercase tracking-wider flex items-center gap-1.5 leading-tight">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-pink-400 shrink-0" viewBox="0 0 20 20" fill="currentColor"><path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" /></svg>
                                     2. Motion Prompt (Video)
                                 </label>
-                                <button onclick="copyText(this, this.parentElement.nextElementSibling)" class="text-[10px] font-bold text-slate-500 hover:text-slate-800 bg-white border border-slate-200 px-2.5 py-1 rounded-lg shadow-sm transition-colors opacity-100 lg:opacity-0 lg:group-hover:opacity-100 shrink-0">Copy</button>
+                                <button onclick="copyText(this, this.parentElement.nextElementSibling)" class="text-[10px] font-bold text-pink-400 hover:text-indigo-500 bg-white border border-pink-100 px-2.5 py-1 rounded-lg shadow-sm transition-colors opacity-100 lg:opacity-0 lg:group-hover:opacity-100 shrink-0">Copy</button>
                             </div>
-                            <textarea class="w-full text-sm text-slate-700 bg-slate-50 p-4 rounded-2xl border border-slate-200 focus:border-[#a6d4fa] focus:ring-1 focus:ring-[#a6d4fa] outline-none resize-y transition-colors leading-relaxed" rows="2">${scene.prompt_video || ""}</textarea>
+                            <textarea class="w-full text-sm text-gray-700 bg-pink-50/50 p-4 rounded-2xl border border-pink-100/50 focus:border-pink-300 focus:ring-1 focus:ring-pink-300 outline-none resize-y transition-colors leading-relaxed" rows="2">${scene.prompt_video || ""}</textarea>
                         </div>
 
                         <!-- Box 3: Voiceover -->
-                        <div class="relative group pt-4 border-t border-slate-100">
+                        <div class="relative group pt-4 border-t border-pink-50">
                             <div class="flex justify-between items-center mb-2 gap-2">
-                                <label class="text-[10px] font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5 leading-tight">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-slate-400 shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clip-rule="evenodd" /></svg>
+                                <label class="text-[10px] font-extrabold bg-gradient-to-r from-indigo-500 to-pink-500 bg-clip-text text-transparent uppercase tracking-wider flex items-center gap-1.5 leading-tight">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-purple-400 shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clip-rule="evenodd" /></svg>
                                     3. Voiceover / Narration
                                 </label>
-                                <button onclick="copyText(this, this.parentElement.nextElementSibling)" class="text-[10px] font-bold text-slate-500 hover:text-slate-800 bg-white border border-slate-200 px-2.5 py-1 rounded-lg shadow-sm transition-colors opacity-100 lg:opacity-0 lg:group-hover:opacity-100 shrink-0">Copy</button>
+                                <button onclick="copyText(this, this.parentElement.nextElementSibling)" class="text-[10px] font-bold text-pink-400 hover:text-indigo-500 bg-white border border-pink-100 px-2.5 py-1 rounded-lg shadow-sm transition-colors opacity-100 lg:opacity-0 lg:group-hover:opacity-100 shrink-0">Copy</button>
                             </div>
-                            <textarea class="w-full text-sm text-slate-600 font-medium italic bg-[#fefaf3] p-4 rounded-2xl border border-[#e5ddd0] focus:border-[#a6d4fa] focus:ring-1 focus:ring-[#a6d4fa] outline-none resize-y transition-colors leading-relaxed" rows="2">${scene.voiceover || "-"}</textarea>
+                            <textarea class="w-full text-sm text-gray-600 font-medium italic bg-purple-50/50 p-4 rounded-2xl border border-purple-100/50 focus:border-purple-300 focus:ring-1 focus:ring-purple-300 outline-none resize-y transition-colors leading-relaxed" rows="2">${scene.voiceover || "-"}</textarea>
                         </div>
                         
                     </div>
@@ -1125,20 +1138,19 @@ Balas HANYA dengan format JSON Object baku seperti di bawah ini tanpa markdown/t
             document.getElementById('temaCerita').classList.remove('border-rose-400', 'focus:ring-rose-200');
             document.getElementById('temaError').classList.add('hidden');
             
-            // Hapus memori JSON
             lastGeneratedData = null;
             
             document.getElementById('outputHeader').classList.add('hidden');
             const container = document.getElementById('canvasContainer');
             container.innerHTML = `
                 <div class="h-[65vh] flex flex-col items-center justify-center text-center opacity-80">
-                    <div class="bg-[#bcc8d8] p-6 rounded-full mb-5 shadow-sm transform hover:scale-110 transition duration-500">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    <div class="bg-white p-6 rounded-full mb-5 shadow-xl shadow-pink-100 border border-pink-50 transform hover:scale-110 transition duration-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-pink-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                         </svg>
                     </div>
-                    <h2 class="text-2xl font-bold text-slate-700" style="font-family: 'Fredoka', sans-serif;">BoardAjaib Masih Kosong</h2>
-                    <p class="text-sm text-slate-500 mt-2 max-w-sm mx-auto leading-relaxed">Isi ide cerita ajaibmu di panel kiri, lalu klik <b class="text-slate-700">Generate</b> untuk mulai merakit adegan.</p>
+                    <h2 class="text-2xl font-extrabold bg-gradient-to-r from-indigo-400 to-pink-400 bg-clip-text text-transparent" style="font-family: 'Fredoka', sans-serif;">BoardAjaib Masih Kosong</h2>
+                    <p class="text-sm text-gray-400 mt-2 max-w-sm mx-auto leading-relaxed">Isi ide cerita ajaibmu di panel kiri, lalu klik <b class="text-pink-400">Generate</b> untuk mulai merakit adegan.</p>
                 </div>
             `;
             
@@ -1152,7 +1164,6 @@ Balas HANYA dengan format JSON Object baku seperti di bawah ini tanpa markdown/t
                 return;
             }
             
-            // Format ulang JSON agar rapi
             const jsonString = JSON.stringify(lastGeneratedData, null, 2);
             const blob = new Blob([jsonString], { type: "application/json" });
             const url = URL.createObjectURL(blob);
