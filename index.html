@@ -67,11 +67,10 @@
                 <span>PanduanAjaib</span>
             </button>
             <button onclick="resetAjaib()" title="hapus dan tulis ulang CeritaAjaib Anda" class="px-4 py-2 text-xs md:text-sm font-bold bg-[#ffb8ce] text-slate-800 hover:bg-[#ffa1bb] rounded-xl transition-colors shadow-sm">ResetAjaib</button>
-            <button id="btnExport" class="px-4 md:px-5 py-2 bg-[#ffb8ce] text-slate-800 rounded-xl text-xs md:text-sm font-bold hover:bg-[#ffa1bb] transition-all flex items-center gap-2 shadow-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 hidden md:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                </svg>
-                Export
+            
+            <!-- Tombol Export JSON -->
+            <button id="btnExportJson" title="Download data mentah JSON" class="px-4 py-2 text-xs md:text-sm font-bold bg-[#ffb8ce] text-slate-800 hover:bg-[#ffa1bb] rounded-xl transition-colors shadow-sm">
+                Export JSON
             </button>
         </div>
     </nav>
@@ -626,29 +625,48 @@
 
         const listModels = {
             google: [
+                { id: "gemini-2.5-flash-lite", label: "⚡ Gemini 2.5 Flash-Lite - Sangat Ringan & Ekstra Cepat" },
                 { id: "gemini-2.5-flash", label: "⚖️ Gemini 2.5 Flash - Cepat & Seimbang" },
                 { id: "gemini-2.5-pro", label: "🌟 Gemini 2.5 Pro - Sangat Detail & Pintar" },
                 { id: "gemini-2.0-flash", label: "⚖️ Gemini 2.0 Flash - Cepat & Seimbang" },
                 { id: "gemini-2.0-flash-001", label: "⚖️ Gemini 2.0 Flash 001 - Cepat & Seimbang" },
-                { id: "gemini-2.0-flash-lite-preview-02-05", label: "⚖️ Gemini 2.0 Flash-Lite - Cepat & Seimbang" },
-                { id: "gemini-2.5-flash-preview-tts", label: "⚖️ Gemini 2.5 Flash Preview TTS" },
-                { id: "gemini-2.5-pro-preview-tts", label: "🌟 Gemini 2.5 Pro Preview TTS" },
-                { id: "gemma-4-26b-it", label: "⚙️ Gemma 4 26B A4B IT - Model Standar" },
-                { id: "gemma-4-31b-it", label: "⚙️ Gemma 4 31B IT - Model Standar" },
-                { id: "gemini-pro-latest", label: "🌟 Gemini Pro Latest - Sangat Detail" },
-                { id: "nano-banana", label: "✔️ Nano Banana - Cepat & Seimbang" },
-                { id: "gemini-3.1-pro-preview", label: "🌟 Gemini 3.1 Pro Preview (Uji Coba)" },
-                { id: "lyria-3-pro-preview", label: "🌟 Lyria 3 Pro Preview (Uji Coba)" },
-                { id: "deep-research-pro", label: "🌟 Deep Research Pro Preview" }
+                { id: "gemini-2.0-flash-lite-001", label: "⚡ Gemini 2.0 Flash-Lite 001 - Sangat Ringan & Ekstra Cepat" },
+                { id: "gemini-2.0-flash-lite", label: "⚡ Gemini 2.0 Flash-Lite - Sangat Ringan & Ekstra Cepat" },
+                { id: "gemma-4-26b-it", label: "📦 Gemma 4 26B A4B IT - Open Source / Ringan" },
+                { id: "gemma-4-31b-it", label: "📦 Gemma 4 31B IT - Open Source / Ringan" },
+                { id: "gemini-flash-latest", label: "⚖️ Gemini Flash Latest - Cepat & Seimbang" },
+                { id: "gemini-flash-lite-latest", label: "⚡ Gemini Flash-Lite Latest - Sangat Ringan & Ekstra Cepat" },
+                { id: "gemini-pro-latest", label: "🌟 Gemini Pro Latest - Sangat Detail & Pintar" },
+                { id: "gemini-3-pro-preview", label: "🌟 Gemini 3 Pro Preview - Sangat Detail & Pintar (Uji Coba)" },
+                { id: "gemini-3-flash-preview", label: "⚖️ Gemini 3 Flash Preview - Cepat & Seimbang (Uji Coba)" },
+                { id: "gemini-3.1-pro-preview", label: "🌟 Gemini 3.1 Pro Preview - Sangat Detail & Pintar (Uji Coba)" },
+                { id: "gemini-3.1-pro-preview-custom-tools", label: "🌟 Gemini 3.1 Pro Preview Custom Tools - Sangat Detail & Pintar (Uji Coba)" },
+                { id: "gemini-3.1-flash-lite", label: "⚡ Gemini 3.1 Flash Lite - Sangat Ringan & Ekstra Cepat" },
+                { id: "gemini-2.5-computer-use-preview-10-2025", label: "📝 Gemini 2.5 Computer Use Preview 10-2025 - Model Teks Standar (Uji Coba)" },
+                { id: "deep-research-max-preview-apr-21-2026", label: "🔬 Deep Research Max Preview (Apr-21-2026) - Riset Mendalam (Uji Coba)" },
+                { id: "deep-research-preview-apr-21-2026", label: "🔬 Deep Research Preview (Apr-21-2026) - Riset Mendalam (Uji Coba)" },
+                { id: "deep-research-pro-preview-dec-12-2025", label: "🔬 Deep Research Pro Preview (Dec-12-2025) - Riset Mendalam (Uji Coba)" },
+                { id: "gemini-2.5-flash-preview-tts", label: "🔊 Gemini 2.5 Flash Preview TTS - Khusus Suara/Voice (Uji Coba)" },
+                { id: "gemini-2.5-pro-preview-tts", label: "🔊 Gemini 2.5 Pro Preview TTS - Khusus Suara/Voice (Uji Coba)" },
+                { id: "nano-banana", label: "🖼️ Nano Banana - Khusus Generate Gambar" },
+                { id: "nano-banana-pro", label: "🖼️ Nano Banana Pro - Khusus Generate Gambar (Uji Coba)" },
+                { id: "nano-banana-2", label: "🖼️ Nano Banana 2 - Khusus Generate Gambar (Uji Coba)" },
+                { id: "lyria-3-clip-preview", label: "🔊 Lyria 3 Clip Preview - Khusus Suara/Voice (Uji Coba)" },
+                { id: "lyria-3-pro-preview", label: "🔊 Lyria 3 Pro Preview - Khusus Suara/Voice (Uji Coba)" },
+                { id: "gemini-3.1-flash-tts-preview", label: "🔊 Gemini 3.1 Flash TTS Preview - Khusus Suara/Voice (Uji Coba)" },
+                { id: "gemini-robotics-er-1.5-preview", label: "🤖 Gemini Robotics-ER 1.5 Preview - Model Robotika (Uji Coba)" },
+                { id: "gemini-robotics-er-1.6-preview", label: "🤖 Gemini Robotics-ER 1.6 Preview - Model Robotika (Uji Coba)" }
             ],
             openai: [
-                { id: "gpt-4o", label: "🌟 GPT-4o - Flagship & Detail" },
-                { id: "gpt-4-turbo", label: "⚖️ GPT-4 Turbo - Cepat" },
-                { id: "gpt-3.5-turbo", label: "⚙️ GPT-3.5 Turbo - Standar" }
+                { id: "gpt-4o", label: "🌟 GPT-4o (Flagship - Cepat & Cerdas)" },
+                { id: "gpt-4o-mini", label: "⚡ GPT-4o Mini (Sangat Cepat)" },
+                { id: "o1-preview", label: "🧠 o1 Preview (Logika Mendalam)" },
+                { id: "o1-mini", label: "⚙️ o1 Mini (Logika Cepat)" }
             ],
             anthropic: [
-                { id: "claude-3-5-sonnet-20240620", label: "🌟 Claude 3.5 Sonnet" },
-                { id: "claude-3-opus-20240229", label: "🌟 Claude 3 Opus" }
+                { id: "claude-3-5-sonnet-latest", label: "🌟 Claude 3.5 Sonnet (Terbaru)" },
+                { id: "claude-3-5-haiku-latest", label: "⚡ Claude 3.5 Haiku (Sangat Cepat)" },
+                { id: "claude-3-opus-latest", label: "🧠 Claude 3 Opus (Kompleks)" }
             ]
         };
 
@@ -732,74 +750,74 @@
                         {
                             judul: "The Pastel Clouds",
                             genre: "Fantasy / Magic",
-                            tema: "Sebuah petualangan magis menyusuri langit di atas awan-awan berwarna permen kapas, dipenuhi makhluk bersayap kristal.",
+                            tema: "Petualangan menenangkan menyusuri langit di atas awan-awan permen kapas yang empuk, tempat para peri kecil bermain.",
                             karakter: "Gadis kecil menggemaskan dengan kacamata penerbang vintage dan mantel tebal berwarna soft pink.",
                             style: "☁️ Soft Pastel (Dreamy)",
                             vo: "Narasi (StoryTeller)",
-                            scene: "4",
-                            ratio: "16:9",
-                            tipeDurasi: "per_scene",
-                            durasi: "5"
+                            scene: "4", ratio: "16:9", tipeDurasi: "per_scene", durasi: "5"
                         },
                         {
                             judul: "Neon Syndicate",
                             genre: "Sci-Fi / Cyberpunk",
-                            tema: "Di kota cyberpunk yang tak pernah tidur, seorang detektif swasta harus memecahkan kasus pencurian data ingatan.",
-                            karakter: "Detektif pria dengan jas hujan panjang gelap, lengan sibernetik bercahaya neon biru.",
+                            tema: "Di kota cyberpunk yang diguyur hujan abadi, seorang detektif swasta harus memecahkan kasus pencurian data ingatan digital.",
+                            karakter: "Detektif pria dengan jas hujan panjang gelap, lengan sibernetik bercahaya neon biru, merokok elektronik.",
                             style: "🕹️ Cyberpunk / Sci-Fi",
                             vo: "Narasi & Percakapan (Campuran)",
-                            scene: "5",
-                            ratio: "16:9",
-                            tipeDurasi: "total",
-                            durasi: "60"
+                            scene: "5", ratio: "16:9", tipeDurasi: "total", durasi: "30"
                         },
                         {
                             judul: "Whispers of the Old Woods",
                             genre: "Horror / Thriller",
-                            tema: "Sekelompok remaja tersesat di hutan kuno yang dihuni entitas peniru suara.",
-                            karakter: "Remaja perempuan dengan jaket kuning cerah kotor, memegang senter yang berkedip.",
+                            tema: "Tersesat di hutan berkabut tebal di mana pepohonan seakan bernapas dan entitas misterius menirukan suara orang tercinta.",
+                            karakter: "Remaja perempuan dengan jaket kuning cerah kotor, memegang senter yang berkedip ketakutan.",
                             style: "🎬 Cinematic / Live Action",
                             vo: "Percakapan (Dialog)",
-                            scene: "6",
-                            ratio: "9:16",
-                            tipeDurasi: "per_scene",
-                            durasi: "5"
+                            scene: "6", ratio: "9:16", tipeDurasi: "per_scene", durasi: "5"
                         },
                         {
-                            judul: "The Last Barista on Mars",
-                            genre: "Slice of Life",
-                            tema: "Kehidupan sehari-hari satu-satunya kedai kopi di koloni planet Mars, menyajikan kopi untuk robot penambang.",
-                            karakter: "Pria paruh baya dengan apron kanvas lusuh, tersenyum ramah sambil mengelap gelas.",
-                            style: "🎨 Watercolor / Hand-drawn",
+                            judul: "The Liminal Train",
+                            genre: "Supernatural / Paranormal",
+                            tema: "Sebuah perjalanan kereta bawah tanah yang tak pernah berhenti, melewati stasiun-stasiun kosong dan ruang liminal yang nyata namun janggal.",
+                            karakter: "Penumpang pria berjas kusut dengan tatapan kosong, duduk sendirian di gerbong kereta bernuansa kuning redup.",
+                            style: "📸 Realistic Photography",
                             vo: "Narasi (StoryTeller)",
-                            scene: "3",
-                            ratio: "9:16",
-                            tipeDurasi: "per_scene",
-                            durasi: "15"
+                            scene: "4", ratio: "16:9", tipeDurasi: "per_scene", durasi: "10"
                         },
                         {
-                            judul: "Knight of the Cursed Realm",
+                            judul: "Clockwork Heart",
                             genre: "Action / Adventure",
-                            tema: "Ksatria terakhir berkelana mencari pedang suci untuk mengakhiri kutukan naga kegelapan.",
-                            karakter: "Ksatria berbalut zirah baja hitam penyok, membawa jubah merah robek.",
+                            tema: "Di era Victoria berteknologi uap, seorang mekanik muda harus melindungi jantung mekanik ajaib dari incaran bangsawan korup.",
+                            karakter: "Pemuda dengan kacamata goggle mekanik, pakaian kulit beraksen tembaga, dan roda gigi menyala di dadanya.",
                             style: "🧸 3D Animation (Pixar/Disney)",
                             vo: "Narasi & Percakapan (Campuran)",
-                            scene: "5",
-                            ratio: "16:9",
-                            tipeDurasi: "total",
-                            durasi: "60"
+                            scene: "5", ratio: "16:9", tipeDurasi: "total", durasi: "45"
                         },
                         {
-                            judul: "Culinary Chaos",
-                            genre: "Comedy / Sitcom",
-                            tema: "Koki bintang lima tak sengaja bertukar tubuh dengan rakun jalanan di malam kunjungan kritikus makanan.",
-                            karakter: "Chef berseragam putih panik dan rakun gemuk bertopi koki.",
-                            style: "🧶 ClayMotion",
+                            judul: "Coffee & Code",
+                            genre: "Slice of Life",
+                            tema: "Kehidupan tenang seorang programmer lepas (freelancer) yang bekerja di kafe estetik, ditemani hujan di luar jendela.",
+                            karakter: "Gadis muda memakai sweater *oversized* warna beige, menggunakan earphone, fokus menatap layar laptop.",
+                            style: "🌸 Anime 90s (Studio Ghibli)",
+                            vo: "Narasi (StoryTeller)",
+                            scene: "3", ratio: "9:16", tipeDurasi: "per_scene", durasi: "15"
+                        },
+                        {
+                            judul: "Galactic Drifters",
+                            genre: "Sci-Fi / Cyberpunk",
+                            tema: "Kru pesawat ruang angkasa usang yang mencoba bertahan hidup dengan menyelundupkan artefak langka melintasi nebula mematikan.",
+                            karakter: "Kapten wanita tangguh berjaket kulit luar angkasa dengan riasan mata tegas dan bekas luka di pipi.",
+                            style: "🎬 Cinematic / Live Action",
                             vo: "Percakapan (Dialog)",
-                            scene: "4",
-                            ratio: "16:9",
-                            tipeDurasi: "per_scene",
-                            durasi: "5"
+                            scene: "5", ratio: "16:9", tipeDurasi: "per_scene", durasi: "5"
+                        },
+                        {
+                            judul: "The Last Seed",
+                            genre: "Post-Apocalyptic",
+                            tema: "Bumi telah mengering. Seorang penjelajah gurun pasir menemukan bibit tanaman terakhir dan harus menjaganya dari kaum perompak.",
+                            karakter: "Pria berjubah lusuh penahan badai pasir, memakai masker filter udara, membawa tabung kaca berisi tanaman kecil yang bercahaya.",
+                            style: "🎨 Watercolor / Hand-drawn",
+                            vo: "Narasi & Percakapan (Campuran)",
+                            scene: "4", ratio: "16:9", tipeDurasi: "total", durasi: "60"
                         }
                     ];
                     
@@ -823,31 +841,32 @@
                     
                 } else {
                     const randomTemplates = [
-                        `Sebuah narasi visual memukau yang berfokus pada perjalanan emosional dalam dunia "${judul}". Sang protagonis harus menghadapi teka-teki takdir untuk menemukan kedamaian.`,
-                        `Kisah thriller penuh misteri di mana rahasia kelam di balik "${judul}" perlahan terungkap, mengancam nyawa siapa saja yang mengetahuinya.`,
-                        `Komedi ringan nan hangat tentang keseharian tokoh utama yang berusaha mewujudkan impiannya di tengah situasi "${judul}" yang penuh kejutan absurd.`,
-                        `Petualangan fantasi epik menembus ruang dan waktu. Artefak atau rahasia bernama "${judul}" menjadi kunci satu-satunya untuk keselamatan dunia.`
+                        `Sebuah narasi visual sinematik yang memukau berfokus pada perjalanan emosional dalam dunia "${judul}". Sang protagonis harus menghadapi teka-teki takdir untuk menemukan kedamaian batin.`,
+                        `Kisah menegangkan penuh intrik di mana rahasia kelam di balik "${judul}" perlahan terungkap dari bayang-bayang, mengancam nyawa siapa saja yang berani mencarinya.`,
+                        `Potret kehidupan *slice-of-life* yang hangat tentang keseharian tokoh utama yang berusaha mewujudkan impian sederhananya di tengah situasi "${judul}".`,
+                        `Petualangan melintasi batas waktu dan dimensi. Entitas kuno bernama "${judul}" menjadi kunci satu-satunya untuk memulihkan keseimbangan alam semesta.`,
+                        `Eksplorasi surealis ke dalam alam bawah sadar. Di tempat yang disebut "${judul}", hukum fisika tidak berlaku, dan ingatan mengambil wujud fisik.`
                     ];
                     const randomKarakterTemplates = [
-                        `Karakter utama dengan pakaian estetik yang memadukan unsur klasik dan futuristik, warna mata bercahaya lembut.`,
-                        `Seseorang dengan penampilan acak-acakan namun memiliki tatapan mata yang sangat tajam dan jenius, selalu membawa buku catatan kecil.`,
-                        `Pemuda energik dengan pakaian kasual yang penuh tambalan warna-warni, selalu membawa ransel besar berisi peralatan aneh.`,
-                        `Sosok misterius yang selalu menyembunyikan wajahnya di balik tudung gelap, bergerak tanpa suara dengan postur yang sangat anggun.`
+                        `Karakter utama dengan pakaian *streetwear* estetik yang memadukan unsur klasik dan futuristik, memiliki warna mata yang seakan menyala di kegelapan.`,
+                        `Seseorang dengan penampilan sedikit acak-acakan namun memiliki tatapan mata yang sangat tajam dan jenius, selalu membawa buku catatan kulit usang.`,
+                        `Pemuda energik dengan pakaian kasual yang penuh tambalan bordir (patches), selalu membawa ransel besar berisi peralatan-peralatan canggih rakitan sendiri.`,
+                        `Sosok misterius yang selalu menyembunyikan wajahnya di balik tudung gelap berbahan tebal, bergerak tanpa suara dengan postur tubuh yang sangat anggun dan waspada.`
                     ];
                     
-                    const randomGenres = ["Action / Adventure", "Sci-Fi / Cyberpunk", "Fantasy / Magic", "Horror / Thriller", "Romance / Drama", "Comedy / Sitcom", "Mystery / Crime"];
-                    const randomStyles = ["🎬 Cinematic / Live Action", "🌸 Anime 90s (Studio Ghibli)", "🧸 3D Animation (Pixar/Disney)", "🎨 Watercolor / Hand-drawn", "🕹️ Cyberpunk / Sci-Fi", "📸 Realistic Photography", "☁️ Soft Pastel (Dreamy)", "🧶 ClayMotion"];
+                    const randomGenres = ["Action / Adventure", "Sci-Fi / Cyberpunk", "Fantasy / Magic", "Horror / Thriller", "Romance / Drama", "Slice of Life", "Post-Apocalyptic", "Supernatural / Paranormal"];
+                    const randomStyles = ["🎬 Cinematic / Live Action", "🌸 Anime 90s (Studio Ghibli)", "🧸 3D Animation (Pixar/Disney)", "🎨 Watercolor / Hand-drawn", "🕹️ Cyberpunk / Sci-Fi", "📸 Realistic Photography", "☁️ Soft Pastel (Dreamy)"];
                     const randomVOs = ["🎙️ Narasi (StoryTeller)", "🗣️ Percakapan (Dialog)", "🎭 Narasi & Percakapan (Campuran)"];
                     const randomRatios = ["16:9", "9:16"];
                     const randomDurTypes = ["per_scene", "total"];
-                    const randomDurs = ["5", "15", "60"];
+                    const randomDurs = ["5", "10", "15", "30"];
                     
                     document.getElementById('genreCerita').value = randomGenres[Math.floor(Math.random() * randomGenres.length)];
                     document.getElementById('temaCerita').value = randomTemplates[Math.floor(Math.random() * randomTemplates.length)];
                     document.getElementById('karakterCerita').value = randomKarakterTemplates[Math.floor(Math.random() * randomKarakterTemplates.length)];
                     document.getElementById('gayaVisual').value = randomStyles[Math.floor(Math.random() * randomStyles.length)];
                     document.getElementById('jenisVoiceover').value = randomVOs[Math.floor(Math.random() * randomVOs.length)];
-                    document.getElementById('jumlahScene').value = Math.floor(Math.random() * 4) + 3; 
+                    document.getElementById('jumlahScene').value = Math.floor(Math.random() * 3) + 4; 
                     document.getElementById('tipeDurasi').value = randomDurTypes[Math.floor(Math.random() * randomDurTypes.length)];
                     document.getElementById('inputDurasi').value = randomDurs[Math.floor(Math.random() * randomDurs.length)];
                     
@@ -875,6 +894,8 @@
 
         // 6. Generate Logic (API Call ke Gemini)
         const form = document.getElementById('promptForm');
+        let lastGeneratedData = null; // Memori untuk menyimpan data JSON terakhir
+
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -987,6 +1008,9 @@ Balas HANYA dengan format JSON Object baku seperti di bawah ini tanpa markdown/t
                 const data = await response.json();
                 const jsonText = data.candidates[0].content.parts[0].text;
                 const resultData = JSON.parse(jsonText);
+
+                // Simpan hasil ke memori agar bisa di-export ke JSON
+                lastGeneratedData = resultData;
 
                 document.getElementById('outDeskripsi').innerText = resultData.video_caption || tema;
 
@@ -1101,6 +1125,9 @@ Balas HANYA dengan format JSON Object baku seperti di bawah ini tanpa markdown/t
             document.getElementById('temaCerita').classList.remove('border-rose-400', 'focus:ring-rose-200');
             document.getElementById('temaError').classList.add('hidden');
             
+            // Hapus memori JSON
+            lastGeneratedData = null;
+            
             document.getElementById('outputHeader').classList.add('hidden');
             const container = document.getElementById('canvasContainer');
             container.innerHTML = `
@@ -1118,34 +1145,30 @@ Balas HANYA dengan format JSON Object baku seperti di bawah ini tanpa markdown/t
             showMessage("Papan Bersih ✨", "Cerita telah dihapus. Silakan mulai ide baru, API Key Anda tetap aman!", "info");
         }
 
-        // Export Logic
-        document.getElementById('btnExport').addEventListener('click', () => {
-            const container = document.getElementById('canvasContainer');
-            if (container.innerText.includes("BoardAjaib Masih Kosong")) {
-                showMessage("Kanvas Kosong", "Generate storyboard terlebih dahulu sebelum melakukan export.", "error");
+        // Export JSON Logic
+        document.getElementById('btnExportJson').addEventListener('click', () => {
+            if (!lastGeneratedData) {
+                showMessage("Belum Ada Data", "Generate storyboard terlebih dahulu sebelum mengunduh file JSON.", "error");
                 return;
             }
             
-            showMessage("Mohon Tunggu", "Sedang menyiapkan dokumen PDF...", "info");
+            // Format ulang JSON agar rapi
+            const jsonString = JSON.stringify(lastGeneratedData, null, 2);
+            const blob = new Blob([jsonString], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
             
-            setTimeout(() => {
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF();
-                const judul = document.getElementById('outJudul').textContent;
-                
-                doc.setFont("helvetica", "bold");
-                doc.setFontSize(20);
-                doc.text(`KerangAjaib Storyboard`, 20, 20);
-                
-                doc.setFontSize(14);
-                doc.text(`Title: ${judul}`, 20, 30);
-                
-                doc.setFont("helvetica", "normal");
-                doc.setFontSize(10);
-                doc.text(`(Export PDF masih dalam tahap pengembangan dasar)`, 20, 40);
-                
-                doc.save("KerangAjaib_Storyboard.pdf");
-            }, 1000);
+            const judulCerita = document.getElementById('outJudul').textContent.replace(/["']/g, "").trim().replace(/\s+/g, "_");
+            const filename = `KerangAjaib_${judulCerita || 'Storyboard'}.json`;
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showMessage("Berhasil", "File JSON berhasil diunduh!", "info");
         });
 
     </script>
